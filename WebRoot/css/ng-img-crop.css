@@ -1,0 +1,64 @@
+img-crop{
+	width:100%;
+	height:100%;
+	display:block;
+	position:relative;
+	overflow:hidden
+}
+img-crop canvas{
+	display:block;
+	position:absolute;
+	top:50%;
+	left:50%;
+	outline:0;
+	-webkit-tap-highlight-color:transparent
+}
+.cropArea {
+	background: #F0F0F0;
+	overflow: hidden;
+	width: 400px;
+	height: 400px;
+}
+.circularImage {
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background: #F0F0F0;
+	border-radius: 50%;
+	position: relative;
+	/*overflow: hidden;*/
+	width: 100px;
+	height: 100px;
+}
+.squareImageLarge{
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background: #F0F0F0;
+	border-radius: 5%;
+	width: 100px;
+	height: 100px;
+	position: relative;
+}
+.squareImageMedium{
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background: #F0F0F0;
+	border-radius: 5%;
+	width: 80px;
+	height: 80px;
+	position: relative;
+}
+.squareImageSmall{
+	background-repeat: no-repeat;
+	background-position: 50%;
+	background: #F0F0F0;
+	border-radius: 5%;
+	width: 60px;
+	height: 60px;
+	position: relative;
+}
+.verticalDivider{
+	border-right: 1px solid #D8D8D8; 
+	height: 450px; 
+	position: absolute; 
+	top: 50px;
+}

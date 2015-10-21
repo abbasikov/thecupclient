@@ -1,0 +1,36 @@
+<div class="modal-header">
+	<h3 class="modal-title">Update User</h3>
+</div>
+<div class="modal-body">
+	<form role="form" name="userUpdateForm" novalidate>
+		<div class="form-group" style="margin-bottom: 5px" ng-class="(userUpdateForm.firstName.$dirty && userUpdateForm.firstName.$invalid) ? 'form-group has-error' : 'form-group' ">
+			<input type="text" name="firstName" ng-model="updatedObj.firstName" placeholder="Enter First Name" class="form-control" required>
+		</div>
+		<div class="form-group" style="margin-bottom: 5px" ng-class="(userUpdateForm.lastName.$dirty && userUpdateForm.lastName.$invalid) ? 'form-group has-error' : 'form-group' ">
+			<input type="text" name="lastName" ng-model="updatedObj.lastName" placeholder="Enter Last Name" class="form-control" required>
+		</div>
+		 <div class="form-group" style="margin-bottom: 5px;" ng-class="(userUpdateForm.email.$dirty && userUpdateForm.email.$invalid) ? 'form-group has-error' : 'form-group' ">
+			<input class="form-control" type="email" ng-model="updatedObj.userEmail" pattern="[a-z0-9._%+-]+@macys.com$"  name="email" placeholder="Enter Email" required>
+		</div>
+		 <div class="form-group" style="margin-bottom: 5px" ng-class="(userUpdateForm.userName.$dirty && userUpdateForm.userName.$invalid) ? 'form-group has-error' : 'form-group' ">
+			<input type="text" name="userName" ng-model="updatedObj.userName" placeholder="Enter User Name" class="form-control" required>
+		</div>
+		<div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.password.$dirty && registerForm.password.$invalid) ? 'form-group has-error' : 'form-group' ">
+			<div ng-dropdown-multiselect button-display-text="Select Labs" options="updatedObj.labsList" selected-model="updatedObj.selectedLabs" ></div>
+		</div>
+		<div class="form-group" style="margin-bottom: 5px;">
+			<div class="checkbox">
+  				<label><input type="checkbox" ng-model="updatedObj.isSuperAdmin">Make Super Admin</label>
+			</div>
+		</div>
+		<div class="form-group" style="margin-bottom: 5px;">
+			<div class="checkbox">
+  				<label><input type="checkbox" ng-model="updatedObj.isLabManager">Make Lab Manager</label>
+			</div>
+		</div>
+	</form>
+</div>
+<div class="modal-footer">
+	<button ng-click="update()" ng-class="(labForm.labName.$error.required || labForm.managerName.$error.required || labForm.username.$error.required) ? 'btn btn-primary disabled' : 'btn btn-primary'">Update</button>
+	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

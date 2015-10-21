@@ -1,0 +1,370 @@
+#signin-demo {
+			position: fixed;
+			right: 0;
+			bottom: 0;
+			z-index: 10000;
+			background: rgba(0,0,0,.6);
+			padding: 6px;
+			border-radius: 3px;
+		}
+		#signin-demo img { cursor: pointer; height: 40px; }
+		#signin-demo img:hover { opacity: .5; }
+		#signin-demo div {
+			color: #fff;
+			font-size: 10px;
+			font-weight: 600;
+			padding-bottom: 6px;
+		}
+        
+       
+        #page-signin-bg {
+            height: 100%;
+            left: 0;
+            overflow: hidden;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 20;
+        }
+        
+        #page-signin-bg .overlay {
+            background: none repeat scroll 0 0 rgba(0, 0, 0, 0.1);
+            bottom: 0;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+        }
+        
+        #page-signin-bg img {
+            width: 100%;
+            height: 100%;
+        }
+        
+        img {
+            vertical-align: middle;
+        }
+        
+        img {
+            border: 0 none;
+        }
+        
+        .page-signin .signin-container {
+            display: table;
+            margin: 150px auto;
+            table-layout: fixed;
+            width: 650px;
+            border-radius: 2px;
+            position: relative;
+            z-index: 999;
+            border-radius: 2px;
+        }
+
+        
+
+        .page-signin .signin-info {
+            display: table-cell;
+            padding: 30px;
+            text-align: left;
+            vertical-align: top;
+            width: 45%;
+            overflow: hidden;
+        }   
+        
+        .page-signin .signin-info .logo-signin {
+            color: #fff;
+            font-size: 22px;
+            font-weight: 700;
+            opacity: 1;
+        }
+        
+        .page-signin .signin-info .slogan {
+            color: #fff;
+            font-size: 16px;
+            font-weight: 300;
+            margin-top: 5px;
+        }
+        
+        .page-signin .signin-info ul {
+            color: #fff;
+            display: block;
+            font-size: 13px;
+            font-weight: 300;
+            margin: 30px 0 0;
+            padding: 0;
+        }
+ 
+        .page-signin .signin-info ul li {
+            list-style: none outside none;
+            margin: 0;
+            padding: 7px 0;
+        }
+        
+        .page-signin .signin-info ul .signin-icon {
+            display: block;
+            float: left;
+            font-size: 14px;
+            line-height: 18px;
+            margin-right: 6px;
+            text-align: center;
+            width: 24px;
+        }
+        
+        .page-signin .signin-form {
+            display: table-cell;
+            vertical-align: top;
+            width: 60%;
+            background: none repeat scroll 0 0 #fff;
+            padding: 30px;
+            position: relative;
+        }
+
+        .page-signin .signin-text:before {
+            background: none repeat scroll 0 0 #e4e4e4;
+            content: "";
+            display: block;
+            height: 1px;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 50%;
+        }
+        
+        .page-signin .signin-text {
+            color: #777;
+            display: block;
+            font-size: 15px;
+            font-style: italic;
+            margin-bottom: 25px;
+            position: relative;
+            text-align: center;
+        }
+        
+        .page-signin .form-group {
+            margin: 0;
+            position: relative;
+        }
+        
+        .page-signin .signin-text span {
+            background: none repeat scroll 0 0 #fff;
+            display: inline-block;
+            padding: 0 20px;
+            position: relative;
+        }
+        
+        .page-signin .form-group.w-icon input[type="password"], .page-signin .form-group.w-icon input[type="text"], .page-signin .form-group.w-icon input[type="email"]  {
+            font-size: 15px;
+            padding-left: 56px;
+        }
+        
+        .page-signin .form-group.w-icon .signin-form-icon {
+            border-right: 1px solid #d6d6d6;
+            bottom: 9px;
+            color: #d6d6d6;
+            display: block;
+            font-size: 14px;
+            left: 0;
+            line-height: 27px;
+            position: absolute;
+            text-align: center;
+            top: 9px;
+            transition: all 0.3s ease 0s;
+            width: 40px;
+            z-index: 1002;
+        }
+        
+        .page-signin .form-group + .form-group {
+            margin: 10px 0 0;
+        }
+        
+        .page-signin .form-group {
+            margin: 0;
+            position: relative;
+        }
+        
+        .page-signin .form-actions {
+            margin-top: 15px;
+        }
+        
+        .page-signin .signin-with {
+            background: none repeat scroll 0 0 #f4f4f4;
+            border-top: 1px solid #ddd;
+            margin: 30px -30px -30px;
+            padding: 20px 30px;
+        }
+        
+        .page-signin .signin-with-btn {
+            border-radius: 2px;
+            color: #fff;
+            display: block;
+            font-weight: 300;
+            padding: 10px 0;
+            text-align: center;
+            transition: all 0.3s ease 0s;
+        }
+        
+        .page-signin .signin-with-btn span {
+            font-weight: 600;
+        }
+        
+        .page-signin .not-a-member {
+            margin: -80px 0 80px;
+            color: #fff;
+            display: block;
+            font-size: 14px;
+            padding: 20px 0;
+            position: relative;
+            text-align: center;
+            z-index: 999;
+            color: #fff;
+            transition: all 0.3s ease 0s;
+        }
+        
+        .page-signin .form-actions .signin-btn {
+            border: medium none;
+            border-radius: 999999px;
+            font-size: 13px;
+            font-weight: 600;
+            line-height: 19px;
+            outline: 0 none !important;
+            padding: 10px 0;
+            text-align: center;
+            transition: all 0.3s ease 0s;
+            width: 100%;
+        }
+        
+        .bg-primary-macys{
+        	background-color: #c00;
+    		color: #fff;
+        }
+        
+  
+        .page-signin .signin-info{
+            background: none repeat scroll 0 0 rgba(204,0,0, 0.8);
+        }
+        
+		.page-signup .signup-container {
+		    border-radius: 2px;
+		    display: block;
+		    position: relative;
+		    z-index: 999;
+		    margin: 90px auto;
+    		width: 380px;
+		}
+		
+		.page-signup .signup-header {
+		    background: none repeat scroll 0 0 rgba(204,0,0, 0.8);
+		    display: block;
+		    overflow: hidden;
+		    padding: 20px 30px;
+		    text-align: center;
+		}
+		
+		.page-signup .signup-header .logo-signup {
+		    color: #fff;
+		    font-size: 22px;
+		    font-weight: 700;
+		    opacity: 1;
+		}
+		
+		.page-signup .signup-header .slogan {
+		    color: #fff;
+		    font-size: 16px;
+		    font-weight: 300;
+		    margin-top: 5px;
+		}
+		
+		.page-signup .signup-form {
+    		padding: 30px;
+		}
+
+		.page-signup .signup-form {
+		    background: none repeat scroll 0 0 #fff;
+		    display: block;
+		    padding: 30px 20px;
+		    position: relative;
+		}
+		
+		.page-signup .signup-text::before {
+		    background: none repeat scroll 0 0 #e4e4e4;
+		    content: "";
+		    display: block;
+		    height: 1px;
+		    left: 0;
+		    position: absolute;
+		    right: 0;
+		    top: 50%;
+		}
+		
+		.page-signup .signup-text {
+		    color: #777;
+		    display: block;
+		    font-size: 15px;
+		    font-style: italic;
+		    margin-bottom: 25px;
+		    position: relative;
+		    text-align: center;
+		}
+		
+		.page-signup .form-group {
+   	 		position: relative;
+		}
+		
+		.page-signup .form-actions {
+    		margin-top: 15px;
+		}
+		
+		.page-signup .signup-text span {
+		    background: none repeat scroll 0 0 #fff;
+		    display: inline-block;
+		    padding: 0 20px;
+		    position: relative;
+		}
+		
+		.form-group::after, .form-group::before {
+		    content: " ";
+		    display: table;
+		}
+
+		.form-group::after {
+    		clear: both;
+		}
+		
+		.page-signup .form-actions .signup-btn {
+		    border: medium none;
+		    border-radius: 999999px;
+		    font-size: 13px;
+		    font-weight: 600;
+		    line-height: 19px;
+		    outline: 0 none !important;
+		    padding: 10px 0;
+		    text-align: center;
+		    transition: all 0.3s ease 0s;
+		    width: 100%;
+		}
+		
+		.page-signup .signup-with {
+		    margin-left: -30px;
+		    margin-right: -30px;
+		    padding-left: 30px;
+		    padding-right: 30px;
+		}
+
+		.page-signup .signup-with {
+		    background: none repeat scroll 0 0 #f4f4f4;
+		    border-top: 1px solid #ddd;
+		    margin: 30px -20px -30px;
+		    padding: 20px;
+		}
+		
+		.page-signup .form-group.w-icon input[type="password"], .page-signup .form-group.w-icon input[type="text"] {
+    		font-size: 15px;
+    		padding-left: 56px;
+		}
+		.form-control {
+    		border-top-color: #c2c2c2;
+    		box-shadow: none;
+		}
+		
+		
+		

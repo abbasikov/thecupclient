@@ -1,0 +1,36 @@
+<div class="modal-header">
+	<h3 class="modal-title">Update Release</h3>
+</div>
+
+<div class="modal-body">
+	<form role="form" name="createReleaseForm" novalidate>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.name.$dirty && createReleaseForm.name.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="name" ng-model="updatedObject.name" placeholder="Enter Release Name" required>
+						</div>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchCutDate.$dirty && createReleaseForm.branchCutDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="branchCutDate" ng-model="updatedObject.branchCutDate" placeholder="Enter Branch Cut Date" required>
+						</div>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchFreezeDate.$dirty && createReleaseForm.branchFreezeDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="branchFreezeDate" ng-model="updatedObject.branchFreezeDate" placeholder="Enter Freeze Date" required>
+						</div>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchHardLockDate.$dirty && createReleaseForm.branchHardLockDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="branchHardLockDate" ng-model="updatedObject.branchHardLockDate" placeholder="Enter Hardlock Date" required>
+						</div>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchProductionDate.$dirty && createReleaseForm.branchProductionDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="branchProductionDate" ng-model="updatedObject.branchProductionDate" placeholder="Enter Production Date" required>
+						</div>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.mcomDate.$dirty && createReleaseForm.mcomDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="mcomDate" ng-model="updatedObject.mcomDate" placeholder="Enter MCOM Date" required>
+						</div>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.bcomDate.$dirty && createReleaseForm.bcomDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="bcomDate" ng-model="updatedObject.bcomDate" placeholder="Enter BCOM Date" required>
+						</div>
+						<div class="form-group">
+      						<div style="color:red">* All fields are mandatory.</div>
+      					</div>
+					</form>
+</div>
+<div class="modal-footer">
+	<button ng-click="update()" ng-class="(createReleaseForm.name.$error.required || createReleaseForm.branchCutDate.$error.required || createReleaseForm.branchFreezeDate.$error.required || createReleaseForm.branchHardLockDate.$error.required || createReleaseForm.branchProductionDate.$error.required || createReleaseForm.mcomDate.$error.required || createReleaseForm.bcomDate.$error.required ) ? 'btn btn-success disabled' : 'btn btn-success'">Update</button>
+	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+</div>

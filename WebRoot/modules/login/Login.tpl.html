@@ -1,0 +1,83 @@
+<!-- Page background -->
+	<div id="page-signin-bg">
+		<!-- Background overlay -->
+		<div class="overlay"></div>
+		<!-- Replace this with your bg image -->
+		<img style="" src="img/macys_logo.jpg" alt="">
+	</div>
+	<!-- / Page background -->
+
+	<!-- Container -->
+	<div class="signin-container animated fadeInRight">
+
+		<!-- Left side -->
+		<div class="signin-info">
+			<span href="#" class="logo-signin">
+				<img src="img/logo-big.png" alt="" style="margin-top: -5px;">&nbsp;
+				FillTheCup
+			</span> <!-- / .logo -->
+			<div class="slogan">
+				Simple. Flexible. Intelligent.
+			</div> <!-- / .slogan -->
+			<ul>
+                <li><i class="fa fa-laptop signin-icon"></i>Easy to use</li>
+                <li><i class="fa fa-users signin-icon"></i>Designed for Lean Labs</li>
+                <li><i class="fa fa-history signin-icon"></i>24/7 directional support</li>
+				
+			</ul> <!-- / Info list -->
+		</div>
+		<!-- / Left side -->
+
+		<!-- Right side -->
+		<div class="signin-form">
+
+			<!-- Form -->
+			<form name="loginForm" novalidate id="signin-form_id">
+				<div class="signin-text">
+					<span>Sign In to your account</span>
+				</div> <!-- / .signin-text -->
+
+				<div class="form-group w-icon">
+					<input name="username" id="username_id" class="form-control input-lg" placeholder="Enter username" type="text" ng-model="username" required>
+					<span style="color:red" ng-show="loginForm.username.$dirty">
+							<span ng-show="loginForm.username.$error.required">Username is required.</span>
+					</span>
+					<span class="fa fa-user signin-form-icon"></span>
+				</div> 
+					
+					
+	
+				<div class="form-group w-icon">
+					<input name="password" id="password_id" class="form-control input-lg" placeholder="Password" type="password" ng-model="password">
+					<span style="color:red" ng-show="loginForm.password.$dirty">
+							<span ng-show="loginForm.password.$error.required">Password is required.</span>
+					</span>
+					<span class="fa fa-lock signin-form-icon"></span>
+				</div> <!-- / Password -->
+				
+				
+				<div class="form-actions">
+					
+					<button ng-click="login()" class="signin-btn bg-primary-macys" >
+                    	<img ng-show="showLoading" ng-src="img/ajax-loader_signup.gif" >&nbsp;{{loginText}}</button>
+					<!--
+					<a  class="forgot-password" id="forgot-password-link" style="padding-left:20px;"  ui-sref="">Forgot your password?</a>
+					 -->
+				</div> <!-- / .form-actions -->
+			</form>
+			<!-- / Form -->
+
+			<!-- "Sign In with" block -->
+			<div class="signin-with">
+				<!-- 
+				  <span style="text-decoration: none; font-size: 11px; padding-left: 73px; color: gray;">&#9400; 2015 Macys. All rights reserved.</span>
+				  -->
+				    <span style="text-decoration:none;padding-left:60px">Not a member? </span><a ui-sref="register" style="text-decoration:underline"> Sign up now</a> 
+			</div>
+			<!-- / "Sign In with" block -->
+
+			
+			<!-- / Password reset form -->
+		</div>
+		<!-- Right side -->
+	</div>

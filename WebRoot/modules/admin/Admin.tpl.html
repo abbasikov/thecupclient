@@ -1,0 +1,93 @@
+
+<!-- header logo: style can be found in header.less [<header> is moved in body] -->
+<!-- [START] MENU BAR  -->  
+<header class="header">     
+            <a  class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                  FillTheCup
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+            	<div class="navbar-left" style="padding-left: 45%; font-weight: bolder; font-size: 22px; padding-top: 10px;">Super Admin</div>
+                <!-- Sidebar toggle button-->
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                    	
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li style="cursor:pointer" class="dropdown user user-menu">
+                            <a  class="dropdown-toggle pointer" data-toggle="dropdown" >
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span>{{firstName}} {{lastName}} <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header bg-light-blue">
+                                    <img src="img/avatar5.png" class="img-circle" alt="User Image" />
+                                    <p>
+                                        SuperAdmin - {{companyType}}
+                                        <small>Member since Nov. 2015</small>
+                                    </p>
+                                </li>
+                                
+                                <!-- Menu Footer-->
+                                <li	 class="user-footer">
+                                	<div class="pull-left">
+                                        <a  ui-sref="home.releasecups" ng-show="profileObject.labs.length>0" class="btn btn-default btn-flat">Lab User</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a ui-sref="signout" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+</header>
+<!-- [END] MENU BAR  -->
+
+        
+        
+        <div class="wrapper row-offcanvas row-offcanvas-left" >
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="left-side sidebar-offcanvas" style="min-height:1768px;">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    
+                    
+                    <!-- sidebar menu: : style can be found in sidebar.less -->
+                    <ul class="sidebar-menu">
+                        <li ng-class="(navsection == 1) ? 'active' : '' ">
+                            <a ui-sref="admin.labs" ng-click="navsection = 1">
+                                <i class="fa fa-flask"></i> <span>Labs</span>
+                            </a>
+                        </li>
+                        <li ng-class="(navsection == 2) ? 'active' : '' ">
+                            <a ui-sref="admin.releases" ng-click="navsection = 2">
+                                <i class="fa fa-cubes"></i> <span>Releases</span>
+                            </a>
+                        </li>
+                        <li ng-class="(navsection == 3) ? 'active' : '' ">
+                            <a ui-sref="admin.reports" ng-click="navsection = 3">
+                                <i class="fa fa-bar-chart"></i> <span>Reports</span>
+                            </a>
+                        </li>
+                        
+                         <li class="treeview" style="display: none;">
+                        	<div style="text-align:center">
+                        		<img id="spinner" ng-src="img/spinner.gif" style="display:none;">
+                        	</div>
+                        </li>
+                        
+                        
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+        
+        	<!-- Right side column. Contains the navbar and content of the page -->
+        	<aside class="right-side ui-view">
+               
+            </aside>
+        
+        </div>

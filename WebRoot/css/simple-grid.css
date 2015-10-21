@@ -1,0 +1,126 @@
+table.simple-grid > tbody > tr > td > select 
+{
+    background-color: transparent;
+}
+
+table.simple-grid > tbody > tr > td > span {
+    padding: 7px 6px;
+    vertical-align: middle;
+    height: 34px;
+    display: block;
+}
+
+table.simple-grid > tbody > tr.not-editable > td > input
+, table.simple-grid > tbody > tr.not-editable > td > span
+/*, table.simple-grid > tbody > tr > td > select */
+{
+    margin: 0;
+    border: none;
+    background-color: transparent;
+    box-shadow: none;
+    padding-left: 7px;
+    padding-right: 7px;
+    width: 100%;
+}
+
+td.sg-multi-select-cell, th.sg-multi-select-cell {
+    width: 30px;
+}
+td.sg-actions-cell, th.sg-actions-cell {
+    width: 90px;
+}
+
+.table.simple-grid >tbody > tr.editable > td {
+   /* padding-left: 0;
+    padding-right: 0;*/
+}
+
+table.simple-grid > tbody > tr > td > input[type="checkbox"]
+{
+   box-shadow: none;
+/*   vertical-align: middle;*/
+   width: auto;
+}
+
+table.simple-grid > tbody > tr > td > input.ng-invalid, 
+table.simple-grid > tbody > tr > td > input.ng-invalid:focus,
+table.simple-grid > tbody > tr > td > select.ng-invalid,
+table.simple-grid > tbody > tr > td > select.ng-invalid:focus {
+    background-color: #fcc;
+}
+table.simple-grid > tbody > tr > td > input:focus, 
+table.simple-grid > tbody > tr > td > input:hover
+/*
+,table.simple-grid > tbody > tr > td > select:focus
+,table.simple-grid > tbody > tr > td > select:hover 
+*/
+
+{
+    border: 1px solid #ccc;
+   /* padding-left: 6px;
+    padding-right: 6px;*/
+    transition: none;
+}
+table.simple-grid > tbody > tr > td > select:focus
+,table.simple-grid > tbody > tr > td > input:focus {
+    background-color: white;
+}
+table.simple-grid > tbody > tr.deleted,
+table.simple-grid > tbody > tr.deleted > td {
+    background-color: #ddd !important;
+}
+table.simple-grid > tbody > tr.deleted > td
+, table.simple-grid > tbody > tr.deleted > td input
+, table.simple-grid > tbody > tr.deleted > td span
+, table.simple-grid > tbody > tr.deleted > td select {
+    color: #888;
+    text-decoration: line-through;
+}
+table.simple-grid > tbody > tr > td.sg-actions-cell
+, table.simple-grid > tbody > tr > td.sg-actions-cell .btn 
+, .table.simple-grid > tbody > tr > td.sg-actions-cell
+, .table.simple-grid > tbody > tr > td.sg-actions-cell .btn 
+{
+    vertical-align: middle;
+    text-decoration: none;
+    color: white;
+}
+table.simple-grid > tbody > tr.added,
+table.simple-grid > tbody > tr.added > td {
+    background-color: #DFFFC0;
+}
+
+/* row selection */
+table.simple-grid > tbody > tr.selected, table.simple-grid > tbody > tr.selected.focused
+, table.simple-grid > tbody > tr.selected > td, table.simple-grid > tbody > tr.selected.focused > td {
+    background-color: #506BDA;
+    color: white;
+}
+table.simple-grid > tbody > tr.selected > td > input,table.simple-grid > tbody > tr.selected.focused > td > input
+,table.simple-grid > tbody > tr.selected > td > select,table.simple-grid > tbody > tr.selected.focused > td > select
+{
+    color: white;
+}
+table.simple-grid > tbody > tr.selected > td > input:focus
+,table.simple-grid > tbody > tr.selected > td > select:focus
+{
+    color: black;
+}
+
+/* focus */
+table.simple-grid > tbody > tr.focused
+, table.simple-grid > tbody > tr.focused > td {
+    background-color: #b0cBfA;
+}
+
+table.simple-grid > tbody > tr.sg-dummy-row,
+table.simple-grid > tbody > tr.sg-dummy-row td,
+table.simple-grid > tbody > tr.sg-dummy-row td * {
+    visibility: hidden;
+    height: 1px;
+    padding: 0;
+    margin: 0;
+    border-bottom: none;
+    border-left: none;
+    border-right: none;
+}

@@ -1,0 +1,77 @@
+<div id="page-signin-bg" class="ng-scope">
+		<!-- Background overlay -->
+		<div class="overlay"></div>
+		<!-- Replace this with your bg image -->
+		<img alt="" src="img/macys_logo.jpg" style="">
+</div>
+<div class="signup-container animated fadeInRight">
+		<!-- Header -->
+		<div class="signup-header">
+			<a class="logo-signup" href="index.html">
+				<img style="margin-top: -5px;" alt="" src="img/logo-big.png">&nbsp;
+				FillTheCup
+			</a> <!-- / .logo -->
+			<div class="slogan">
+				Simple. Flexible. Intelligent.
+			</div> <!-- / .slogan -->
+		</div>
+		<!-- / Header -->
+
+		<!-- Form -->
+		<div class="signup-form">
+		
+			<form id="signup-form_id"   name="registerForm" novalidate>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.firstName.$dirty && registerForm.firstName.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="text" ng-model="firstName" name="firstName" placeholder="Enter First Name" required>
+					</div>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.lastName.$dirty && registerForm.lastName.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="text" ng-model="lastName" name="lastName" placeholder="Enter Last Name" required>
+					</div>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.email.$dirty && registerForm.email.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="email" pattern="[a-z0-9._%+-]+@macys.com$" ng-model="userEmail" name="email" placeholder="Enter Email" required>
+					</div>
+                    
+                    <!-- LAB INFO -->
+                    <div style="margin-bottom: 5px;" ng-class="(registerForm.labname.$dirty && registerForm.labname.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input type="text" title="Lab Name" name="labname"	ng-model="labName" placeholder="Enter Lab Name" class="form-control" required>
+					</div>
+					<div style="margin-bottom: 5px;" ng-class="(registerForm.managername.$dirty && registerForm.managername.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input type="text" title="Manager Name" name="managername" ng-model="managerName" placeholder="Enter Manager Name" class="form-control" required>
+					</div>
+					<div class="form-group" style="margin-bottom: 5px;">
+						<input type="text" title="PDM Name" 	ng-model="pdmName" placeholder="Enter PDM Name" class="form-control">
+					</div>
+					<!-- LAB INFO -->	
+                    
+                    <div style="margin-bottom: 5px;" ng-class="(registerForm.username.$dirty && registerForm.username.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input type="text" title="User Name" name="username"	ng-model="userName" placeholder="Enter RACF ID" class="form-control" required>
+					</div>
+	                <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.password.$dirty && registerForm.password.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="password" ng-model="password" name="password" placeholder="Enter Password" required>
+					</div>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.password1.$dirty && registerForm.password1.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="password" ng-model="confirmPassword" name="password1" placeholder="Enter Confirm Password" required>
+                    </div>
+                    <div class="form-group">
+      						<div style="color:red;font-size: 12px;font-style: italic;">* All fields are mandatory except PDM Name.</div>
+      						<div style="color:red;font-size: 12px;font-style: italic;">* Email should be of macys domain.</div>
+      				</div>
+                	<div class="form-actions">
+	                    <button type="button" ng-click="submitLab()" ng-class="( registerForm.firstName.$error.required || registerForm.lastName.$error.required || registerForm.labname.$error.required || registerForm.managername.$error.required || registerForm.username.$error.required || registerForm.password.$error.required || registerForm.password1.$error.required || registerForm.email.$error.required || registerForm.email.$invalid) ? 'signup-btn bg-primary-macys btn disabled' : 'signup-btn bg-primary-macys'">
+	                    	<img ng-show="showLoading" ng-src="img/ajax-loader_signup.gif" >&nbsp;{{registerText}}
+	                    </button>
+                   	</div>
+            </form>
+			
+			
+ 
+			<!-- "Sign In with" block -->
+			<div class="signup-with">
+				<div class="have-account">
+					Already have an account? <a ui-sref="login">Sign In</a>
+				</div>
+			</div>
+			<!-- / "Sign In with" block -->
+		</div>
+		<!-- Right side -->
+	</div>

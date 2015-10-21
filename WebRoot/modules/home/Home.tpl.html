@@ -1,0 +1,138 @@
+
+<!-- header logo: style can be found in header.less [<header> is moved in body] -->
+<!-- [START] MENU BAR  -->  
+<header class="header">     
+            <a  class="logo">
+                <!-- Add the class icon to your logo image or logo icon to add the margining -->
+                  <strong>FillTheCup</strong>
+            </a>
+            <!-- Header Navbar: style can be found in header.less -->
+            <nav class="navbar navbar-static-top" role="navigation">
+            <div class="navbar-left" style="padding-left: 40%; font-weight: bolder; font-size: 22px; padding-top: 10px;color: white">{{profileObject.labs[0].name}}</div>
+                <!-- Sidebar toggle button-->
+                <div class="navbar-right">
+                    <ul class="nav navbar-nav">
+                    	<!-- Messages: style can be found in dropdown.less-->
+                        <li style="cursor:pointer" class="dropdown messages-menu">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-envelope"></i>
+                                <!-- <span class="label label-success">4</span> --> 
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 0 messages</li>                                
+                                <li class="footer"><a style="cursor:pointer">See All Messages</a></li>
+                            </ul>
+                        </li>
+                        
+                        <li style="cursor:pointer" class="dropdown tasks-menu">
+                            <a class="dropdown-toggle" data-toggle="dropdown">
+                                <i class="fa fa-tasks"></i>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li class="header">You have 0 tasks</li>
+                                <li class="footer">
+                                    <a style="cursor:pointer">View all tasks</a>
+                                </li>
+                            </ul>
+                        </li>
+                        
+                        
+                        <!-- User Account: style can be found in dropdown.less -->
+                        <li style="cursor:pointer" class="dropdown user user-menu">
+                            <a  class="dropdown-toggle pointer" data-toggle="dropdown" >
+                                <i class="glyphicon glyphicon-user"></i>
+                                <span> <i class="caret"></i></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <!-- User image -->
+                                <li class="user-header bg-macys">
+                                    <img src="img/avatar5.png" class="img-circle" alt="User Image" />
+                                    <p>
+                                        {{profileObject.firstName}}&nbsp;{{profileObject.lastName}} - Macys
+                                        <small>Member since Nov. 2015</small>
+                                    </p>
+                                </li>
+                                
+                                <!-- Menu Footer-->
+                                <li class="user-footer">
+                                    <div class="pull-left">
+                                        <a  ui-sref="admin.labs" ng-show="isSuperAdmin" class="btn btn-default btn-flat">Admin</a>
+                                    </div>
+                                    <div class="pull-right">
+                                        <a ui-sref="signout" class="btn btn-default btn-flat">Sign out</a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+</header>
+<!-- [END] MENU BAR  -->
+
+        
+        
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <!-- Left side column. contains the logo and sidebar -->
+            <aside class="left-side sidebar-offcanvas" style="min-height:1768px;">
+                <!-- sidebar: style can be found in sidebar.less -->
+                <section class="sidebar">
+                    <!-- Sidebar user panel -->
+                    <div class="user-panel">
+                        <div class="pull-left image">
+                            <img src="img/avatar5.png" class="img-circle" alt="User Image" />
+                        </div>
+                        <div class="pull-left info">
+                            <p class="macys-font-color">Manager :&nbsp;{{profileObject.labs[0].managerName}}</p>
+                            <a><i class="fa fa-circle text-success"></i> Online</a>
+                            
+                            
+                        </div>
+                        
+                        <div class="form-group" style="margin-bottom: 0px;">
+                     		<select id="lab" 
+                     				title="Lab" 
+                     				ng-options="item.name for item in profileObject.labs" 
+                     				ng-change="updateLastClicked()" 
+                     				ng-model="selectedLab" 
+                     				class="form-control"
+                     				style="margin-bottom: 0px">
+                     		</select>
+							 
+						</div>
+                                            
+                            
+                    </div>
+                     <ul class="sidebar-menu">
+						<li ng-class="(navsection == -2) ? 'active' : '' " ng-if="profileObject.isLabManager == 'true'">
+                            <a ui-sref="home.teammembers">
+                                <i class="fa fa-users"></i> <span> Team Members</span>
+                            </a>
+                        </li>                     
+                        <li ng-class="(navsection == -1) ? 'active' : '' ">
+                            <a ui-sref="home.releasecups">
+                                <i class="fa fa-coffee"></i> <span> Release Cups</span>
+                            </a>
+                        </li>
+                        <li ng-repeat="releaseCup in releaseCupsList" ng-class="(navsection == releaseCup.uuid) ? 'active' : '' ">
+                            <a ng-href="#home/releasecupdetail/{{releaseCup.uuid}}">
+                                <i class="fa fa-coffee"></i> 
+                                <span>{{releaseCup.name}}</span><br>
+                                <span style="color:green;font-size:9px;">Available Dev Days:&nbsp;{{releaseCup.availableDevDays}}</span>
+                            </a>
+                        </li>
+                        <li class="treeview">
+                        	<div style="text-align:center">
+                        		<img id="spinner" ng-src="img/spinner.gif" style="display:none;">
+                        	</div>
+                        </li>
+                    </ul>
+                </section>
+                <!-- /.sidebar -->
+            </aside>
+        
+        	<aside class="right-side ui-view">
+               
+            </aside>
+        
+        </div>

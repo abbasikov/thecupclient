@@ -1,0 +1,258 @@
+<section class="content">
+	<div class="row animated fadeInRight">
+		<div class="col-xs-4">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Create Lab</h3>
+
+				</div>
+				<div class="box-body">
+					<form role="form" name="createLabForm" novalidate>
+						<div style="margin-bottom: 5px;" ng-class="(createLabForm.labname.$dirty && createLabForm.labname.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input type="text" title="Lab Name" name="labname"	ng-model="labname" placeholder="Enter Lab Name" class="form-control" required>
+						</div>
+						<div style="margin-bottom: 5px;" ng-class="(createLabForm.managername.$dirty && createLabForm.managername.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input type="text" title="Manager Name" name="managername" ng-model="managername" placeholder="Enter Manager Name" class="form-control" required>
+						</div>
+						<div class="form-group" style="margin-bottom: 5px;">
+							<input type="text" title="PDM Name" 	ng-model="pdmname" placeholder="Enter PDM Name" class="form-control">
+						</div>
+						 
+						<div style="margin-bottom: 5px;visibility: hidden;" ng-class="(createLabForm.username.$dirty && createLabForm.username.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input type="text" title="User Name" name="username"	ng-model="username" placeholder="Enter UserName" class="form-control" required>
+						</div>
+						<div style="margin-bottom: 5px;visibility: hidden;" ng-class="(createLabForm.password.$dirty && createLabForm.password.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input type="password" title="User Name" name="password"	ng-model="password" placeholder="Enter Password" class="form-control" required>
+						</div>
+						<div class="form-group" style="margin-bottom: 5px;visibility: hidden;">
+						<input class="form-control">
+					</div>
+					<div class="form-group" style="margin-bottom: 5px;visibility: hidden;">
+						<input class="form-control">
+					</div>
+					<div class="form-group" style="margin-bottom: 5px;visibility: hidden;">
+						<input class="form-control">
+					</div>
+						
+      				<div class="form-group" style="margin-bottom: 5px">
+      					<div style="color:red;font-size: 12px;font-style: italic;">* All fields are mandatory except PDM Name.</div>
+      				</div> 
+						
+					</form>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<button ng-click="submitLab()" type="submit" ng-class="(createLabForm.labname.$error.required || createLabForm.managername.$error.required ) ? 'btn btn-success disabled' : 'btn btn-success'">Submit</button>
+				</div>
+				<div class="overlay" 		ng-show="rcOverlay"></div>
+				<div class="loading-img" 	ng-show="rcLoading"></div>
+			</div>
+			
+		</div>
+		<div class="col-xs-4">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Create Lab User</h3>
+
+				</div>
+				<div class="box-body">
+					<form id="signup-form_id"   name="registerForm" novalidate>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.firstName.$dirty && registerForm.firstName.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="text" ng-model="firstName" name="firstName" placeholder="Enter First Name" required>
+					</div>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.lastName.$dirty && registerForm.lastName.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="text" ng-model="lastName" name="lastName" placeholder="Enter Last Name" required>
+					</div>
+                    <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.email.$dirty && registerForm.email.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="email" pattern="[a-z0-9._%+-]+@macys.com$" ng-model="userEmail" name="email" placeholder="Enter Email" required>
+					</div>
+                    
+                    <div style="margin-bottom: 5px;" ng-class="(registerForm.username.$dirty && registerForm.username.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input type="text" title="User Name" name="username"	ng-model="userName" placeholder="Enter RACF ID" class="form-control" required>
+					</div>
+	                <div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.password.$dirty && registerForm.password.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input class="form-control" type="password" ng-model="password" name="password" placeholder="Enter Password" required>
+					</div>
+					
+					<div class="form-group" style="margin-bottom: 5px;" ng-class="(registerForm.password.$dirty && registerForm.password.$invalid) ? 'form-group has-error' : 'form-group' ">
+						 <div ng-dropdown-multiselect button-display-text="Select Labs" options="labsList" selected-model="selectedLabs" extra-settings="settingsLabs"></div>
+					</div>
+					
+					<div class="form-group" style="margin-bottom: 5px;">
+						 <div class="checkbox">
+  							<label><input type="checkbox" ng-model="makeSuperAdmin">Make Super Admin</label>
+						</div>
+					</div>
+					
+					<div class="form-group" style="margin-bottom: 5px;">
+						 <div class="checkbox">
+  							<label><input type="checkbox" ng-model="makeLabManager">Make LabManager</label>
+						</div>
+					</div>
+                    <div class="form-group" style="margin-bottom: 5px;">
+      					<div style="color:red;font-size: 12px;font-style: italic;">* Email should be of macys domain.</div>
+      				</div>
+      				
+                	
+            </form>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<button ng-click="submitUser()" type="submit" ng-class="( registerForm.firstName.$error.required || registerForm.lastName.$error.required || registerForm.username.$error.required || registerForm.password.$error.required || registerForm.email.$error.required || registerForm.email.$invalid) ? 'btn btn-success disabled' : 'btn btn-success'">Submit</button>
+				</div>
+				<div class="overlay" 		ng-show="usrOverlay"></div>
+				<div class="loading-img" 	ng-show="usrLoading"></div>
+			</div>
+			
+		</div>
+		<!-- SYSTEM COMPONENTS -->
+		<div class="col-xs-4">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Subject Matter Experts/Functions</h3>
+
+				</div>
+				<div class="box-body" style="overflow: scroll;height: 430px;">
+					<div ng-repeat="item in globalSystemComponents" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
+                  		<a class="btn btn-success btn-xs"><span class="glyphicon glyphicon-chevron-right"></span></a>
+  						<span style="font-weight: 800; padding: 6px; font-size: 14px;">{{item.name}}</span>
+                  		<a class="pull-right btn btn-danger btn-xs" ng-click="removeComponent($index)"><span class="glyphicon glyphicon-remove"></span></a>
+                  	</div>
+                  	<div class="form-group" style="margin-top: 25px;">
+	                  	<div class="input-group">
+			                <input type="text" ng-model="componentName" placeholder="Enter function name" class="form-control">
+			                	<span class="input-group-btn">
+			                		<span class="btn btn-file btn-success" ng-click="addComponent()">Add</span>
+			                    </span>
+			            </div>
+		            </div>
+				</div>
+				<div class="overlay" ng-show="componentOverlay"></div>
+				<div class="loading-img" ng-show="componentLoading"></div>
+			</div>
+			
+		</div>
+		
+	</div>
+	<div class="row animated fadeInRight">
+		<div class="col-xs-12">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Labs List</h3>
+					<div class="box-tools">
+						<div class="input-group">
+							<input type="text" name="table_search"
+								class="form-control input-sm pull-right" style="width: 150px;"
+								placeholder="Search" ng-model="searchTextForLab">
+							<div class="input-group-btn">
+								<button class="btn btn-sm btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body table-responsive no-padding">
+					<table style="font-size:12px" id="example1" class="table table-bordered table-striped dataTable" ng-if="labsList.length>0">
+						<thead>
+							<tr>
+								<th>Lab Name</th>
+								<th>Manager Name</th>
+								<th>PDM Name</th>
+								<th>Activated</th>
+								<th>Created By</th>
+								<th>Created On</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="lab in labsList | filter:searchTextForLab">
+								
+								<td>{{lab.name}}</td>
+								<td>{{lab.managerName}}</td>
+								<td>{{lab.pdmName}}</td>
+								<td>{{lab.isActivated == 'true' ? 'Yes' : 'No'  }}</td>
+								<td>{{lab.createdBy}}</td>
+								<td>{{lab.createdOnISO8601 | date}}</td>
+								<td>
+									<button class="btn btn-success btn-xs" ng-click="editLab($index)">Edit</button>
+									<button ng-if="lab.isActivated == 'true'" class="btn btn-primary btn-xs" ng-click="activateLab(lab,'false')">DeActivate</button>
+									<button ng-if="lab.isActivated == 'false'" class="btn btn-primary btn-xs" ng-click="activateLab(lab,'true')">Activate</button>
+									<button ng-if="lab.isActivated == 'false'" class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(lab.uuid,$index,labsList,'lab')">Perm Delete</button>
+																				
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="overlay" ng-show="listOverlay"></div>
+				<div class="loading-img" ng-show="listLoading"></div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+	</div>
+	
+	<div class="row animated fadeInRight">
+		<div class="col-xs-12">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Lab Users List</h3>
+					<div class="box-tools">
+						<div class="input-group">
+							<input type="text" name="table_search"
+								class="form-control input-sm pull-right" style="width: 150px;"
+								placeholder="Search" ng-model="searchTextForUser">
+							<div class="input-group-btn">
+								<button class="btn btn-sm btn-default">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>	
+				<!-- /.box-header -->
+				<div class="box-body table-responsive no-padding">
+					<table style="font-size:12px" id="example1" class="table table-bordered table-striped dataTable" ng-if="usersList.length>0">
+						<thead>
+							<tr>
+								<th>Frist Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>User Name</th>
+								<th>Lab Manager</th>
+								<th>Super Admin</th>
+								<th>Created By</th>
+								<th>Created On</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="user in usersList | filter:searchTextForUser" ng-if="user.username != 'ftcadmin'">
+								
+								<td>{{user.firstName}}</td>
+								<td>{{user.lastName}}</td>
+								<td>{{user.userEmail}}</td>
+								<td>{{user.username}}</td>
+								<td>{{user.isLabManager == 'true' ? 'Yes' : 'No'}}</td>
+								<td>{{user.isSuperAdmin == 'true' ? 'Yes' : 'No'}}</td>
+								<td>{{user.createdBy}}</td>
+								<td>{{user.createdOnISO8601 | date}}</td>
+								<td>
+									<button class="btn btn-success btn-xs" ng-click="editUser($index)">Edit</button>
+									<button class="btn btn-primary btn-xs" ng-click="resetPassword($index)">Reset Password</button>
+									<button class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(user.uuid,$index,usersList,'user')">Perm Delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="overlay" ng-show="listOverlayForUser"></div>
+				<div class="loading-img" ng-show="listLoadingForUser"></div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+	</div>
+</section>

@@ -1,0 +1,95 @@
+<!-- Content Header (Page header) -->
+<section class="content-header">
+	<h1>Hypothesis Section</h1>
+</section>
+
+<!-- Main content -->
+<section class="content">
+
+	<div class="row animated fadeInRight">
+		<div class="col-md-6">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Create Hypothesis</h3>
+
+				</div>
+				<div class="box-body">
+					<form role="form">
+						<div class="form-group">
+							<input type="text" title="Capacity" ng-model="name"
+								placeholder="Enter Hypothesis Name" id="ctl"
+								class="form-control">
+						</div>
+						<div class="form-group">
+							<input type="text" title="Capacity" ng-model="description"
+								placeholder="Enter Hypothesis Description" id="ctl"
+								class="form-control">
+						</div>
+
+					</form>
+				</div>
+				<!-- /.box-body -->
+				<div class="box-footer">
+					<button ng-click="submitHypothesis()" class="btn btn-success"
+						type="submit">Submit</button>
+				</div>
+				<div class="overlay" ng-show="showHypothesisOverlay"></div>
+				<div class="loading-img" ng-show="showHypothesisLoading"></div>
+			</div>
+			<!-- /.box -->
+		</div>
+	</div>
+
+
+	<div class="row animated fadeInRight">
+		<div class="col-xs-12">
+			<div class="box box-primary">
+				<div class="box-header">
+					<h3 class="box-title">Hypothesis List</h3>
+					<div class="box-tools">
+						<div class="input-group">
+							<input type="text" name="table_search"
+								class="form-control input-sm pull-right" style="width: 150px;"
+								placeholder="Search" ng-model="searchText">
+							<div class="input-group-btn">
+								<button class="btn btn-sm">
+									<i class="fa fa-search"></i>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- /.box-header -->
+				<div class="box-body table-responsive no-padding">
+					<table style="font-size:12px" id="example1"
+						class="table table-bordered table-striped dataTable">
+						<thead>
+							<tr>
+								<th>Hypothesis Name</th>
+								<th>Hypothesis Description</th>
+								<th>Action</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>Test Hypo</td>
+								<td>Test Description</td>
+								<td>
+									<button class="btn btn-primary btn-xs"
+										ng-click="editMachine($index)">Edit</button>
+									<button class="btn btn-danger btn-xs"
+										ng-click="deleteMachine(item.uuid,$index)">Delete</button>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="overlay ng-hide" ng-show="showMachineListOverlay"></div>
+				<div class="loading-img ng-hide" ng-show="showMachineListLoading"></div>
+				<!-- /.box-body -->
+			</div>
+			<!-- /.box -->
+		</div>
+	</div>
+
+</section>
