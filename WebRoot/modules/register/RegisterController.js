@@ -1,5 +1,5 @@
 function RegisterController($scope,$state,Notification,FileUploader,ErrorUtils,CONSTANTS,context,$cookies,loadContext,RegisterService){
-	Notification.success({message: 'Please fill the form for new registration.', title: 'Welcome to FillTheCup'});
+	Notification.success({message: 'Please fill the form for new registration.', title: 'Welcome'});
 	
 	$scope.registerText = "SIGN UP";
 	$scope.firstName 	= "";

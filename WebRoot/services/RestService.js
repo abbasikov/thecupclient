@@ -3,6 +3,34 @@ angular.module('rest.service',['ngResource'])
 		"BASE_REST_URL"	: document.location.origin+"/thecupserver",
 		"DATE_FORMAT"	: "DD MMM YYYY hh:mm A"			
 	})
+	.factory('ComponentsByLabService',function($resource,CONSTANTS){
+		var data = $resource(CONSTANTS.BASE_REST_URL+'/rest/public/labs/:id/components',{id:'@id'},{
+			save:{
+				method:'POST',
+				headers:{'Content-Type':'application/x-www-form-urlencoded '}
+			},
+			update:{
+				method:'PUT',
+				headers:{'Content-Type':'application/x-www-form-urlencoded '}
+			}
+		});
+		
+		return data;
+	})
+	.factory('ComponentsService',function($resource,CONSTANTS){
+		var data = $resource(CONSTANTS.BASE_REST_URL+'/rest/public/components',{},{
+			save:{
+				method:'POST',
+				headers:{'Content-Type':'application/x-www-form-urlencoded '}
+			},
+			update:{
+				method:'PUT',
+				headers:{'Content-Type':'application/x-www-form-urlencoded '}
+			}
+		});
+		
+		return data;
+	})
 	.factory('AssignLabToUser',function($resource,CONSTANTS){
 		var data = $resource(CONSTANTS.BASE_REST_URL+'/rest/public/assignlabstouser',{},{
 			save:{
@@ -173,6 +201,16 @@ angular.module('rest.service',['ngResource'])
 	})
 	.factory('DeleteService',function($resource,CONSTANTS){
 		var data = $resource(CONSTANTS.BASE_REST_URL+'/rest/public/deletebusinessobject',{},{
+			save:{
+				method:'POST',
+				headers:{'Content-Type':'application/x-www-form-urlencoded '}
+			}
+		});
+		
+		return data;
+	})
+	.factory('DeleteRelationshipService',function($resource,CONSTANTS){
+		var data = $resource(CONSTANTS.BASE_REST_URL+'/rest/public/deleterelationship',{},{
 			save:{
 				method:'POST',
 				headers:{'Content-Type':'application/x-www-form-urlencoded '}

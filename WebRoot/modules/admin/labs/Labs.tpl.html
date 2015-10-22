@@ -1,6 +1,6 @@
 <section class="content">
 	<div class="row animated fadeInRight">
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<div class="box box-success">
 				<div class="box-header">
 					<h3 class="box-title">Create Lab</h3>
@@ -49,7 +49,7 @@
 			</div>
 			
 		</div>
-		<div class="col-xs-4">
+		<div class="col-xs-3">
 			<div class="box box-success">
 				<div class="box-header">
 					<h3 class="box-title">Create Lab User</h3>
@@ -105,11 +105,11 @@
 			</div>
 			
 		</div>
-		<!-- SYSTEM COMPONENTS -->
-		<div class="col-xs-4">
+		<!-- [START] SYSTEM COMPONENTS -->
+		<div class="col-xs-3">
 			<div class="box box-success">
 				<div class="box-header">
-					<h3 class="box-title">Subject Matter Experts/Functions</h3>
+					<h3 class="box-title">Global Skills</h3>
 
 				</div>
 				<div class="box-body" style="overflow: scroll;height: 430px;">
@@ -120,7 +120,7 @@
                   	</div>
                   	<div class="form-group" style="margin-top: 25px;">
 	                  	<div class="input-group">
-			                <input type="text" ng-model="componentName" placeholder="Enter function name" class="form-control">
+			                <input type="text" ng-model="componentName" placeholder="Enter skill name" class="form-control">
 			                	<span class="input-group-btn">
 			                		<span class="btn btn-file btn-success" ng-click="addComponent()">Add</span>
 			                    </span>
@@ -132,7 +132,36 @@
 			</div>
 			
 		</div>
+		<!-- [END] SYSTEM COMPONENTS -->
 		
+		<!-- [START] GLOBAL COMPONENTS -->
+		<div class="col-xs-3">
+			<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Global Components</h3>
+
+				</div>
+				<div class="box-body" style="overflow: scroll;height: 430px;">
+					<div ng-if="item.createdBy == 'Super Admin'" ng-repeat="item in globalComponents" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
+                  		<a class="btn btn-success btn-xs"><span class="glyphicon glyphicon-chevron-right"></span></a>
+  						<span style="font-weight: 800; padding: 6px; font-size: 14px;">{{item.name}}</span>
+                  		<a class="pull-right btn btn-danger btn-xs" ng-click="removeGlobalComponent($index)"><span class="glyphicon glyphicon-remove"></span></a>
+                  	</div>
+                  	<div class="form-group" style="margin-top: 25px;">
+	                  	<div class="input-group">
+			                <input type="text" ng-model="globalComponentName" placeholder="Enter comp name" class="form-control">
+			                	<span class="input-group-btn">
+			                		<span class="btn btn-file btn-success" ng-click="addGlobalComponent()">Add</span>
+			                    </span>
+			            </div>
+		            </div>
+				</div>
+				<div class="overlay" ng-show="componentOverlay"></div>
+				<div class="loading-img" ng-show="componentLoading"></div>
+			</div>
+			
+		</div>
+		<!-- [END] GLOBAL COMPONENTS -->
 	</div>
 	<div class="row animated fadeInRight">
 		<div class="col-xs-12">

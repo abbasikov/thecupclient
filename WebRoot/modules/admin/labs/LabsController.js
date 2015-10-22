@@ -97,7 +97,7 @@ function UserUpdateController($scope,$modalInstance,userItem,labsList,GetAllLabs
 	}
 }
 
-function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUtils,RegisterService,DeleteService,$modal,UpdateObjectService,SysComponentService,DeleteSysComponentService,LabService,UsersService,GetAllLabsByUser,AssignLabToUser,PasswordResetService){
+function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUtils,RegisterService,DeleteService,$modal,UpdateObjectService,SysComponentService,DeleteSysComponentService,LabService,UsersService,GetAllLabsByUser,AssignLabToUser,PasswordResetService,ComponentsService,DeleteBusinessObject ){
 	
 	$scope.rcOverlay = false;
 	$scope.rcLoading = false;
@@ -120,6 +120,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	$scope.labsList = [];
 	$scope.usersList = [];
 	$scope.globalSystemComponents = [];
+	$scope.globalComponents = [];
 	
 	$scope.settingsLabs = {
 			displayProp: 'name', idProp: 'uuid'
@@ -521,6 +522,14 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		$scope.globalSystemComponents.push.apply($scope.globalSystemComponents, rest);
 	};
 	
+	$scope.deleteItemFromGlobalComponentList = function(index){
+		var from 	= index;
+		var to		= 0;
+		var rest = $scope.globalComponents.slice((to || from) + 1 || $scope.globalComponents.length);
+		$scope.globalComponents.length = from < 0 ? $scope.globalComponents.length + from : from;
+		$scope.globalComponents.push.apply($scope.globalComponents, rest);
+	};
+	
 	$scope.getAllLabs = function(){
 		var labs = LabService.get();
 		
@@ -579,6 +588,28 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		} 
 	};
 	
+	$scope.addGlobalComponent = function(){
+		if($scope.globalComponentName){
+			var labs = ComponentsService.save("name="+$scope.globalComponentName);
+			$scope.toggleComponentShow();
+			labs.$promise.then(
+					function(data){
+						$scope.toggleComponentShow();
+						if(data.meta.code == 200){
+							$scope.globalComponents.push(data.data);
+							$scope.globalComponentName = "";
+						}
+						else{
+							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
+						}
+					},
+					function(error){
+						$scope.toggleComponentShow();
+						Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
+					});
+		} 
+	};
+	
 	$scope.removeComponent = function(index){
 		var labs = DeleteSysComponentService.save("uuid="+$scope.globalSystemComponents[index].uuid);
 		$scope.toggleComponentShow();
@@ -587,6 +618,25 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					$scope.toggleComponentShow();
 					if(data.meta.code == 200){
 						$scope.deleteItemFromComponentList(index);
+					}
+					else{
+						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
+					}
+				},
+				function(error){
+					$scope.toggleComponentShow();
+					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
+				});
+	};
+	
+	$scope.removeGlobalComponent = function(index){
+		var labs = DeleteBusinessObject.save("uuid="+$scope.globalComponents[index].uuid);
+		$scope.toggleComponentShow();
+		labs.$promise.then(
+				function(data){
+					$scope.toggleComponentShow();
+					if(data.meta.code == 200){
+						$scope.deleteItemFromGlobalComponentList(index);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -617,12 +667,32 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				});
 	};
 	
+	$scope.getAllGlobalComponents = function(){
+		var labs = ComponentsService.get();
+		$scope.toggleComponentShow();
+		labs.$promise.then(
+				function(data){
+					$scope.toggleComponentShow();
+					if(data.meta.code == 200){
+						$scope.globalComponents = data.dataList;
+					}
+					else{
+						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
+					}
+				},
+				function(error){
+					$scope.toggleComponentShow();
+					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
+				});
+	}
+	
 	$scope.getAllLabs();
 	$scope.getAllUsers();
 	$scope.getAllSysComponents();
+	$scope.getAllGlobalComponents();
 }
 
 
 angular.module('labs',['ngAnimate','ui.router','ui-notification','angularFileUpload','ng.httpLoader','angularFileUpload'])
-	.controller('LabsController',['$scope','$state','Notification','context','ErrorUtils','ServiceUtils','RegisterService','DeleteService','$modal','UpdateObjectService','SysComponentService','DeleteSysComponentService','LabService','UsersService','GetAllLabsByUser','AssignLabToUser','PasswordResetService',LabsController])
+	.controller('LabsController',['$scope','$state','Notification','context','ErrorUtils','ServiceUtils','RegisterService','DeleteService','$modal','UpdateObjectService','SysComponentService','DeleteSysComponentService','LabService','UsersService','GetAllLabsByUser','AssignLabToUser','PasswordResetService','ComponentsService','DeleteBusinessObject ',LabsController])
 	

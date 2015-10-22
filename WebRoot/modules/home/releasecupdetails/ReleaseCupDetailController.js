@@ -36,6 +36,11 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	                    { id: 'IPM3', ipm: 'IPM3', isCollapsed:true },
 	                    { id: 'IPM4', ipm: 'IPM4', isCollapsed:true }];
 	
+	$scope.statusArray = [ 
+	                    { id: 'Open', status: 'Open', isCollapsed:true },
+	                    {  id: 'Closed', status: 'Closed', isCollapsed:true }
+	                   ];
+	
 	$scope.mostModelArray = [
 						{ id: 'Minimize', mostmodelname: 'Minimize', isCollapsed:true },
 						{ id: 'Optimize', mostmodelname: 'Optimize', isCollapsed:true },
@@ -318,26 +323,30 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	
 	$scope.getDefaultTasks = function(columsList){
 		var arr = [];
+		var defaultNumberOfTasks = 5;
 		//Number of rows
-		for(var rowIndex=0;rowIndex<3;rowIndex++){
+		for(var rowIndex=0;rowIndex<defaultNumberOfTasks;rowIndex++){
 			var obj		= {};
 			for(colIndex in columsList){
 				var colName = columsList[colIndex].name;
-				
 				if(colName == 'Tasks'){
 					if(rowIndex == 0)
 						obj[colName] = "Kill Switch";
 					if(rowIndex == 1)
 						obj[colName] = "Segmentation";
 					if(rowIndex == 2)
-						obj[colName] = "PRC";
+						obj[colName] = "Measurement";
+					if(rowIndex == 3)
+						obj[colName] = "SST-PRC";
+					if(rowIndex == 4)
+						obj[colName] = "Functional";
+					
 				}
 				else
 					obj[colName] = "0";
 			}
 			arr.push(obj);
 		}
-		console.log("arr: ",arr);
 		
 		return arr;
 	}
@@ -372,6 +381,12 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 				//$scope.gridOptions.columnDefs[i].cellFilter 			= 'mapIPM';
 				$scope.gridOptions.columnDefs[i].editDropdownValueLabel	= 'ipm';
 				$scope.gridOptions.columnDefs[i].editDropdownOptionsArray= $scope.ipmArray;
+			}
+			else if($scope.gridOptions.columnDefs[i].name == "Status"){
+				$scope.gridOptions.columnDefs[i].type	 				= "text";
+				$scope.gridOptions.columnDefs[i].editableCellTemplate 	= 'ui-grid/dropdownEditor';
+				$scope.gridOptions.columnDefs[i].editDropdownValueLabel	= 'status';
+				$scope.gridOptions.columnDefs[i].editDropdownOptionsArray= $scope.statusArray;
 			}
 			else{
 				$scope.gridOptions.columnDefs[i].type	 		= "number";
@@ -477,7 +492,7 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 		$scope.twoGraphs.remainingPercentageData=[];
 		
 		//For Occupied
-		for(var i=2;i<$scope.gridOptions.columnDefs.length;i++){
+		for(var i=3;i<$scope.gridOptions.columnDefs.length-1;i++){
 			var occObj = {label:'', value:''};
 			var remObj = {label:'', value:''};
 			
@@ -514,30 +529,34 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	$scope.rePopulatebarGraphData = function(){
 		$scope.barGraphData 			= [];
 		
-		for(var i=3;i<$scope.gridOptions.columnDefs.length;i++){
-			var comObj 			= {component:'', occ:'', rem:''};
-			comObj.component 	= $scope.gridOptions.columnDefs[i].name;
-			
-			var devDays = parseInt($scope.selectedReleaseCup.devDays);
-			var gridApiColIndex= -1;
-			
-			//Find aggregation value of colum  occObj.label
-			for(j in $scope.gridApi.grid.columns){
-				if($scope.gridApi.grid.columns[j].name == comObj.component){
-					gridApiColIndex = j;
-					break;					
+		var excludeColum = "MVPs,MOSTModel,IPM,Status";
+		
+		for(var i=0;i<$scope.gridOptions.columnDefs.length;i++){
+			if(excludeColum.indexOf( $scope.gridOptions.columnDefs[i].name) == -1){
+				var comObj 			= {component:'', occ:'', rem:''};
+				comObj.component 	= $scope.gridOptions.columnDefs[i].name;
+				
+				var devDays = parseInt($scope.selectedReleaseCup.devDays);
+				var gridApiColIndex= -1;
+				
+				//Find aggregation value of colum  occObj.label
+				for(j in $scope.gridApi.grid.columns){
+					if($scope.gridApi.grid.columns[j].name == comObj.component){
+						gridApiColIndex = j;
+						break;					
+					}
 				}
-			}
-			
-			//Calculating Percentage
-			var aggregateValue 		= $scope.gridApi.grid.columns[gridApiColIndex].getAggregationValue();
-			var percentValOcc		= (aggregateValue/devDays)*100;
-			var percentValRem		= ((devDays-aggregateValue)/devDays)*100;
-			
-			comObj.occ = $scope.graphFormatter(percentValOcc,"");
-			comObj.rem = $scope.graphFormatter(percentValRem,"");
-			
-			$scope.barGraphData.push(comObj);		
+				
+				//Calculating Percentage
+				var aggregateValue 		= $scope.gridApi.grid.columns[gridApiColIndex].getAggregationValue();
+				var percentValOcc		= (aggregateValue/devDays)*100;
+				var percentValRem		= ((devDays-aggregateValue)/devDays)*100;
+				
+				comObj.occ = $scope.graphFormatter(percentValOcc,"");
+				comObj.rem = $scope.graphFormatter(percentValRem,"");
+				
+				$scope.barGraphData.push(comObj);
+			}					
 		}
 		
 	};
