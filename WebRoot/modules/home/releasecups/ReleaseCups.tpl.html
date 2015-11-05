@@ -27,28 +27,28 @@
 							<input id="hldate" class="form-control" ng-model="hardLockDate" type="text" disabled="disabled">
 						</div>
 						
-						<div class="form-group" style="margin-bottom: 10px" ng-class="(rcForm.availableDevDays.$dirty && rcForm.availableDevDays.$invalid) ? 'form-group has-error' : 'form-group' ">
-							<label for="adevDays">Available Dev Days:</label>
-							<input id="adevDays" class="form-control" name="availableDevDays" ng-model="availableDevDays" type="text" ng-pattern="/^\d{0,9}$/" required>
-						</div>
 						
 						<div class="form-group" style="margin-bottom: 10px" ng-class="(rcForm.devDays.$dirty && rcForm.devDays.$invalid) ? 'form-group has-error' : 'form-group' ">
-							<label for="devDays">Dev Days:</label>
+							<label for="devDays">Development Days:</label>
 							<input id="devDays" class="form-control" name="devDays" ng-model="devDays" type="text" ng-pattern="/^\d{0,9}$/" required>
 						</div>
 						
 						<div class="form-group" style="margin-bottom: 10px" ng-class="(rcForm.regDays.$dirty && rcForm.regDays.$invalid) ? 'form-group has-error' : 'form-group' ">
-							<label for="regDays">Regression Days:</label>
+							<label for="regDays">End to End Regression Days:</label>
 							<input id="regDays" class="form-control" name="regDays" ng-model="regDays" type="text" ng-pattern="/^\d{0,9}$/" required>
 						</div>
 						
       					<div class="form-group">
       					<label for="regDays">Select Skills:</label>
-      						<div class="checkbox" ng-repeat="sysComp in globalSysComponents">
+      						<div class="checkbox" ng-repeat="sysComp in globalSysComponents | orderBy:'name'">
                             	<label><input type="checkbox" ng-model="sysComp.checked"/>{{sysComp.name}}</label>
                              </div>
                             
                         </div>
+                        <div class="form-group" style="margin-bottom: 10px;visibility: hidden;" ng-class="(rcForm.availableDevDays.$dirty && rcForm.availableDevDays.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<label for="adevDays">Available Dev Days:</label>
+							<input id="adevDays" class="form-control" name="availableDevDays" ng-model="availableDevDays" type="text" ng-pattern="/^\d{0,9}$/" required>
+						</div>
                         <div class="form-group">
       						<div style="color:red">* All fields are mandatory.</div>
       					</div>
@@ -58,7 +58,7 @@
 				</div>
 				<!-- /.box-body -->
 				<div class="box-footer">
-					<button ng-click="submitReleaseCup()" type="submit" ng-class="(rcForm.availableDevDays.$invalid || rcForm.devDays.$invalid || rcForm.regDays.$invalid || release.uuid =='0') ? 'btn btn-success disabled' : 'btn btn-success'">Submit</button>
+					<button ng-click="submitReleaseCup()" type="submit" ng-class="( rcForm.devDays.$invalid || rcForm.regDays.$invalid || release.uuid =='0') ? 'btn btn-success disabled' : 'btn btn-success'">Submit</button>
 				</div>
 				<div class="overlay" 		ng-show="showReleaseCupsOverlay"></div>
 				<div class="loading-img" 	ng-show="showReleaseCupsLoading"></div>
@@ -72,12 +72,12 @@
 					<h3 class="box-title">Lab Components</h3>
 				</div>
 				<div class="box-body" style="overflow: scroll;height: 657px;">
-					<div ng-repeat="item in labComponents" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
+					<div ng-repeat="item in labComponents | orderBy:'name'" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
                   		<input type="checkbox" ng-model="item.isCheckedBoolean" ng-change="checkChanged(item)">
   						<span style="font-weight: 800; padding: 6px; font-size: 14px;">{{item.name}}</span>
                   		<a class="pull-right btn btn-danger btn-xs" ng-if="item.createdBy != 'Super Admin'" ng-click="removeGlobalComponent(item.uuid,$index)"><span class="glyphicon glyphicon-remove"></span></a>
                   	</div>
-                  	<div class="form-group" style="margin-top: 25px;">
+                  	<div class="form-group" style="margin-top: 25px;display: none;">
 	                  	<div class="input-group">
 			                <input type="text" ng-model="componentName" placeholder="Enter component name" class="form-control">
 			                	<span class="input-group-btn">

@@ -37,8 +37,10 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	                    { id: 'IPM4', ipm: 'IPM4', isCollapsed:true }];
 	
 	$scope.statusArray = [ 
-	                    { id: 'Open', status: 'Open', isCollapsed:true },
-	                    {  id: 'Closed', status: 'Closed', isCollapsed:true }
+	                    { id: 'Ready', status: 'Ready', isCollapsed:true },
+	                    {  id: 'InProgress', status: 'InProgress', isCollapsed:true },
+	                    {  id: 'Done', status: 'Done', isCollapsed:true },
+	                    {  id: 'Live', status: 'Live', isCollapsed:true }
 	                   ];
 	
 	$scope.mostModelArray = [
@@ -56,6 +58,8 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 			
 			enableSorting  	: true,
 			enableRowSelection: true,
+			enableHorizontalScrollbar : 1,
+			enableVerticalScrollbar : 1,
 			showGridFooter: true,
 		    showColumnFooter: true,
 			columnDefs 		: [],
@@ -363,7 +367,11 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 		//Iterate thru each colum
 		for(i in $scope.gridOptions.columnDefs){
 			$scope.gridOptions.columnDefs[i].enableCellEdit = true;
-			$scope.gridOptions.columnDefs[i].enableCellEdit = true;
+			$scope.gridOptions.columnDefs[i].enableSorting = false;
+			$scope.gridOptions.columnDefs[i].enableColumnMenu = false; 
+			if($scope.gridOptions.columnDefs.length>6){
+				$scope.gridOptions.columnDefs[i].width = 150;
+			}
 			if($scope.gridOptions.columnDefs[i].name == "MVPs" ){
 				$scope.gridOptions.columnDefs[i].type	 		= "text";
 				$scope.gridOptions.columnDefs[i].cellTemplate	= 'mapAddress.html';
@@ -394,11 +402,12 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 				$scope.gridOptions.columnDefs[i].footerCellTemplate = $scope.footerCellTempateFunc();
 			}
 				
-			$scope.gridOptions.columnDefs[i].cellClass		= 'grid-text-align';
-			$scope.gridOptions.columnDefs[i].headerCellClass		= 'grid-text-align grid-header';
+			$scope.gridOptions.columnDefs[i].cellClass			= 'grid-text-align';
+			$scope.gridOptions.columnDefs[i].headerCellClass 	= 'grid-text-align grid-header';
 		}//end-for-loop
 		
 		$scope.gridOptions.showGridFooter = false;
+		
 	};
 	
 	

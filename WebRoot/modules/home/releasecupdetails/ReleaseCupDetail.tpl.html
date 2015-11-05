@@ -1,6 +1,16 @@
 <!-- Content Header (Page header) -->
 <section class="content-header">
 	<h1 style="font-weight: 800;">Release Cup : {{selectedReleaseCup.name}}</h1>
+	<ol class="breadcrumb" style="padding: 0px;">
+		<li>
+			<div class="label bg-primary" style="font-size:12px">Reg Days :
+				{{selectedReleaseCup.regressionDays}}</div>
+		</li>
+		<li>
+			<div class="label bg-green" style="font-size:12px">Dev Days :
+				{{selectedReleaseCup.devDays}}</div>
+		</li>
+	</ol>
 
 </section>
 
@@ -172,6 +182,7 @@
 					
 					<h3 class="box-title">The Cup - {{selectedReleaseCup.name}}</h3>
 					<div class="box-tools pull-right">
+					
 						<button id="idGraphBtn" class="btn btn-primary ng-hide" ng-click="rePopulatebarGraphData()">Show Graph</button>
 						<button id="idGraphBtn2" class="btn btn-primary ng-hide" ng-click="rePopulatebarGraphIPMData()">Show Graph2</button>
 						<button class="btn btn-primary" ng-click="showIPMView()">IPM View</button>

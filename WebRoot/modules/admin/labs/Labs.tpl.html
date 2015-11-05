@@ -113,7 +113,7 @@
 
 				</div>
 				<div class="box-body" style="overflow: scroll;height: 430px;">
-					<div ng-repeat="item in globalSystemComponents" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
+					<div ng-repeat="item in globalSystemComponents | orderBy:'name'" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
                   		<a class="btn btn-success btn-xs"><span class="glyphicon glyphicon-chevron-right"></span></a>
   						<span style="font-weight: 800; padding: 6px; font-size: 14px;">{{item.name}}</span>
                   		<a class="pull-right btn btn-danger btn-xs" ng-click="removeComponent($index)"><span class="glyphicon glyphicon-remove"></span></a>
@@ -142,7 +142,7 @@
 
 				</div>
 				<div class="box-body" style="overflow: scroll;height: 430px;">
-					<div ng-if="item.createdBy == 'Super Admin'" ng-repeat="item in globalComponents" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
+					<div ng-if="item.createdBy == 'Super Admin'" ng-repeat="item in globalComponents | orderBy:'name'" style="background: rgb(248, 250, 255) none repeat scroll 0px 0px; border: 1px solid rgb(218, 226, 234); color: rgb(124, 158, 178); padding: 10px;">
                   		<a class="btn btn-success btn-xs"><span class="glyphicon glyphicon-chevron-right"></span></a>
   						<span style="font-weight: 800; padding: 6px; font-size: 14px;">{{item.name}}</span>
                   		<a class="pull-right btn btn-danger btn-xs" ng-click="removeGlobalComponent($index)"><span class="glyphicon glyphicon-remove"></span></a>
@@ -196,7 +196,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="lab in labsList | filter:searchTextForLab">
+							<tr ng-repeat="lab in labsList | orderBy:'name' | filter:searchTextForLab">
 								
 								<td>{{lab.name}}</td>
 								<td>{{lab.managerName}}</td>
@@ -258,7 +258,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="user in usersList | filter:searchTextForUser" ng-if="user.username != 'ftcadmin'">
+							<tr ng-repeat="user in usersList | orderBy:'name' | filter:searchTextForUser" ng-if="user.username != 'ftcadmin'">
 								
 								<td>{{user.firstName}}</td>
 								<td>{{user.lastName}}</td>

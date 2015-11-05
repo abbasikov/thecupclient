@@ -47,7 +47,7 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 					$scope.toggleLoadingRecordCreation();
 					if(data.meta.code == 200){
 						$scope.$parent.releaseCupsList.push(data.data);
-						Notification.success({message:"ReleaseCup created. Please check left navigation section.", title: 'Error'});
+						Notification.success({message:"ReleaseCup created. Please check left navigation section.", title: 'Success'});
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -72,9 +72,10 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 	
 	$scope.validate = function(){
 		try{
-			var total 	= parseInt($scope.availableDevDays);
 			var dev		= parseInt($scope.devDays);
 			var reg		= parseInt($scope.regDays);
+			var total 	= dev+reg;
+			$scope.availableDevDays = total+"";
 			
 			if(total != (dev+reg)){
 				$scope.errorMessage = "Available Dev Days must be equal to Dev and Regression Days."
@@ -154,10 +155,14 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 		rel.$promise.then(
 				function(data){
 					if(data.meta.code == 200){
-						$scope.releases = data.dataList;
+						$scope.releases = [];
+						for(index in data.dataList){
+							if(data.dataList[index].isActivated == 'true'){
+								$scope.releases.push(data.dataList[index]);
+							}		
+						}
 						$scope.releases.unshift({name:'Select Release',uuid:'0'});
 						$scope.release = $scope.releases[0];
-						
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});

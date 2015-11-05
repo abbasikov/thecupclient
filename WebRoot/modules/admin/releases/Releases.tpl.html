@@ -82,7 +82,7 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="release in releasesList | filter:searchText">
+							<tr ng-repeat="release in releasesList | orderBy:'name' | filter:searchText">
 								<td>{{release.name}}</td>
 								<td>{{release.branchCutDate}}</td>
 								<td>{{release.branchFreezeDate}}</td>
