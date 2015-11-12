@@ -14,14 +14,11 @@
 						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchCutDate.$dirty && createReleaseForm.branchCutDate.$invalid) ? 'form-group has-error' : 'form-group' ">
 							<input class="form-control" type="text" name="branchCutDate" ng-model="branchCutDate" placeholder="Enter Branch Cut Date" required>
 						</div>
-						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchFreezeDate.$dirty && createReleaseForm.branchFreezeDate.$invalid) ? 'form-group has-error' : 'form-group' ">
-							<input class="form-control" type="text" name="branchFreezeDate" ng-model="branchFreezeDate" placeholder="Enter Freeze Date" required>
-						</div>
 						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchHardLockDate.$dirty && createReleaseForm.branchHardLockDate.$invalid) ? 'form-group has-error' : 'form-group' ">
 							<input class="form-control" type="text" name="branchHardLockDate" ng-model="branchHardLockDate" placeholder="Enter Hardlock Date" required>
 						</div>
-						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchProductionDate.$dirty && createReleaseForm.branchProductionDate.$invalid) ? 'form-group has-error' : 'form-group' ">
-							<input class="form-control" type="text" name="branchProductionDate" ng-model="branchProductionDate" placeholder="Enter Production Date" required>
+						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.branchFreezeDate.$dirty && createReleaseForm.branchFreezeDate.$invalid) ? 'form-group has-error' : 'form-group' ">
+							<input class="form-control" type="text" name="branchFreezeDate" ng-model="branchFreezeDate" placeholder="Enter Freeze Date" required>
 						</div>
 						<div style="margin-bottom: 5px" ng-class="(createReleaseForm.mcomDate.$dirty && createReleaseForm.mcomDate.$invalid) ? 'form-group has-error' : 'form-group' ">
 							<input class="form-control" type="text" name="mcomDate" ng-model="mcomDate" placeholder="Enter MCOM Date" required>
@@ -36,7 +33,7 @@
 				</div>
 				<!-- /.box-body -->
 				<div class="box-footer">
-					<button ng-click="submitRelease()" type="submit" ng-class="(createReleaseForm.name.$error.required || createReleaseForm.branchCutDate.$error.required || createReleaseForm.branchFreezeDate.$error.required || createReleaseForm.branchHardLockDate.$error.required || createReleaseForm.branchProductionDate.$error.required || createReleaseForm.mcomDate.$error.required || createReleaseForm.bcomDate.$error.required ) ? 'btn btn-success disabled' : 'btn btn-success'">Submit</button>
+					<button ng-click="submitRelease()" type="submit" ng-class="(createReleaseForm.name.$error.required || createReleaseForm.branchCutDate.$error.required || createReleaseForm.branchFreezeDate.$error.required || createReleaseForm.branchHardLockDate.$error.required || createReleaseForm.mcomDate.$error.required || createReleaseForm.bcomDate.$error.required ) ? 'btn btn-success disabled' : 'btn btn-success'">Submit</button>
 					
 				</div>
 				<div class="overlay" 		ng-show="releaseOverlay"></div>
@@ -70,33 +67,25 @@
 						<thead>
 							<tr>
 								<th>Release Name</th>
-								<th>BranchCut Date</th>
-								<th>BranchFreeze Date</th>
-								<th>BranchHardlock Date</th>
-								<th>BranchProduction Date</th>
-								<th>MCOM Date</th>
-								<th>BCOM Date</th>
-								<th>Activated</th>
-								<th>Created On</th>
+								<th>BranchCut</th>
+								<th>BranchHardlock</th>
+								<th>BranchFreeze</th>
+								<th>MCOM</th>
+								<th>BCOM</th>
 								<th>Action</th>
 							</tr>
 						</thead>
 						<tbody>
-							<tr ng-repeat="release in releasesList | orderBy:'name' | filter:searchText">
+							<tr ng-repeat="release in releasesList | filter:searchText">
 								<td>{{release.name}}</td>
 								<td>{{release.branchCutDate}}</td>
-								<td>{{release.branchFreezeDate}}</td>
 								<td>{{release.branchHardLockDate}}</td>
-								<td>{{release.branchProductionDate}}</td>
+								<td>{{release.branchFreezeDate}}</td>
 								<td>{{release.mcomDate}}</td>
 								<td>{{release.bcomDate}}</td>
-								<td>{{release.isActivated == 'true' ? 'Yes' : 'No'}}</td>
-								<td>{{release.createdOnISO8601 | date}}</td>
 								<td>
 									<button class="btn btn-success btn-xs" ng-click="editRelease($index)">Edit</button>
-									<button ng-if="release.isActivated == 'true'"  class="btn btn-primary btn-xs" ng-click="activateRelease(release,$index,'false')">DeActivate</button>
-									<button ng-if="release.isActivated == 'false'" class="btn btn-primary btn-xs" ng-click="activateRelease(release,$index,'true')">Activate</button>
-									<button ng-if="release.isActivated == 'false'"  class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(release.uuid,$index,releasesList,'list')">Perm Delete</button>											
+									<button class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(release.uuid,$index,releasesList,'list')">Delete</button>											
 								</td>
 							</tr>
 						</tbody>

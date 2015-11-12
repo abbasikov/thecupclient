@@ -184,7 +184,7 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 							var obj = data.dataList[index];
 							$scope.globalSysComponents.push(obj);
 						}
-						
+						$scope.globalSysComponents = ServiceUtils.sortArrayByField($scope.globalSysComponents,'name',false);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -275,6 +275,7 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 							data.data.isCheckedBoolean = data.data.isChecked == 'true' ? true : false;
 							$scope.labComponents.push(data.data);
 							$scope.componentName = "";
+							$scope.labComponents = ServiceUtils.sortArrayByField($scope.labComponents,'name',false);
 						}
 						else{
 							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -298,7 +299,7 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 						for(index in $scope.labComponents){
 							$scope.labComponents[index].isCheckedBoolean = $scope.labComponents[index].isChecked == 'true' ? true : false;
 						}
-						$scope.labComponents = ServiceUtils.sortArrayByField($scope.labComponents, "createdBy", true); 
+						$scope.labComponents = ServiceUtils.sortArrayByField($scope.labComponents, "name", false); 
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});

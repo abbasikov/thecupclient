@@ -117,6 +117,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	$scope.makeSuperAdmin = false;
 	$scope.$parent.navsection 	= 1;
 	
+	$scope.profileObject = context.getUser();
 	$scope.labsList = [];
 	$scope.usersList = [];
 	$scope.globalSystemComponents = [];
@@ -127,10 +128,11 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	}
 	
 	$scope.submitLab = function(){
-		var data = 	"labName="+$scope.labname+"&" +
-					"managerName="+$scope.managername+"&"+
-					"pdmName="+$scope.pdmname+"&"+
-					"createdBy=Super Admin";
+		
+		var data = 	"labName="+encodeURIComponent($scope.labname)+"&" +
+					"managerName="+encodeURIComponent($scope.managername)+"&"+
+					"pdmName="+encodeURIComponent($scope.pdmname)+"&"+
+					"createdBy="+($scope.profileObject.username == 'ftcadmin' ? "Super Admin":($scope.profileObject.firstName+" "+$scope.profileObject.lastName));
 		
 		$scope.toggleRecordCreation();
 		var register = LabService.save(data);
@@ -141,6 +143,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					if(data.meta.code == 200){
 						Notification.success({message:"Record created successfully.", title: 'Success'});
 						$scope.labsList.push(data.data);
+						$scope.labsList = ServiceUtils.sortArrayByField($scope.labsList,'name',false); 
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -472,11 +475,11 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	};
 	
 	$scope.submitUser = function(){
-		var data = 	"firstName="+$scope.firstName+"&"+
-		 			"lastName="+$scope.lastName+"&"+
-		 			"userEmail="+$scope.userEmail+"&"+
-		 			"userName="+$scope.userName+"&"+
-		 			"password="+$scope.password+"&"+
+		var data = 	"firstName="+encodeURIComponent($scope.firstName)+"&"+
+		 			"lastName="+encodeURIComponent($scope.lastName)+"&"+
+		 			"userEmail="+encodeURIComponent($scope.userEmail)+"&"+
+		 			"userName="+encodeURIComponent($scope.userName)+"&"+
+		 			"password="+encodeURIComponent($scope.password)+"&"+
 					"isSuperAdmin="+$scope.makeSuperAdmin+"&"+
 					"isLabManager="+$scope.makeLabManager+"&"+
 					"isLabUser=true&"+
@@ -489,7 +492,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				function(data){
 					$scope.toggleUserCreation();
 					if(data.meta.code == 200){
-						Notification.success({message:"Record Created", title: 'Success'});
+						Notification.success({message:"User Created", title: 'Success'});
 						$scope.usersList.push(data.data);
 					}
 					else{
@@ -536,8 +539,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		labs.$promise.then(
 				function(data){
 					if(data.meta.code == 200){
-						console.log("AllLabs : ",data)
-						$scope.labsList = data.dataList;
+						$scope.labsList = ServiceUtils.sortArrayByField(data.dataList,'name',false);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -554,8 +556,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		get.$promise.then(
 				function(data){
 					if(data.meta.code == 200){
-						console.log("AllUsers : ",data)
-						$scope.usersList = data.dataList;
+						$scope.usersList = ServiceUtils.sortArrayByField(data.dataList,'firstName',false);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -575,6 +576,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 						$scope.toggleComponentShow();
 						if(data.meta.code == 200){
 							$scope.globalSystemComponents.push(data.data);
+							$scope.globalSystemComponents = ServiceUtils.sortArrayByField($scope.globalSystemComponents,'name',false);
 							$scope.componentName = "";
 						}
 						else{
@@ -598,6 +600,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 						if(data.meta.code == 200){
 							$scope.globalComponents.push(data.data);
 							$scope.globalComponentName = "";
+							$scope.globalComponents = ServiceUtils.sortArrayByField($scope.globalComponents,'name',false);
 						}
 						else{
 							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -655,7 +658,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				function(data){
 					$scope.toggleComponentShow();
 					if(data.meta.code == 200){
-						$scope.globalSystemComponents = data.dataList;
+						$scope.globalSystemComponents = ServiceUtils.sortArrayByField(data.dataList,'name',false);						
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -674,7 +677,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				function(data){
 					$scope.toggleComponentShow();
 					if(data.meta.code == 200){
-						$scope.globalComponents = data.dataList;
+						$scope.globalComponents = ServiceUtils.sortArrayByField(data.dataList,'name',false);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});

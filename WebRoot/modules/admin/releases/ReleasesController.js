@@ -22,12 +22,12 @@ function ReleasesUpdateController($scope,$modalInstance,releaseItem){
 	
 }
 
-function ReleasesController($scope,$state,Notification,context,ErrorUtils,DeleteService,$modal,UpdateObjectService,ReleasesService){
+function ReleasesController($scope,$state,Notification,context,ErrorUtils,DeleteService,$modal,UpdateObjectService,ReleasesService,ServiceUtils){
 	$scope.name					= "";
 	$scope.branchCutDate  		= "";
 	$scope.branchFreezeDate		= "";
 	$scope.branchHardLockDate	= "";
-	$scope.branchProductionDate = "";
+	$scope.branchProductionDate = "TBD";
 	$scope.mcomDate				= "";
 	$scope.bcomDate				= "";
 	
@@ -189,13 +189,13 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 	};
 	
 	$scope.submitRelease = function(){
-		var data = 	"name="+$scope.name+"&"+
-					"branchCutDate="+$scope.branchCutDate+"&"+
-					"branchFreezeDate="+$scope.branchFreezeDate+"&"+
-					"branchHardLockDate="+$scope.branchHardLockDate+"&"+
-					"branchProductionDate="+$scope.branchProductionDate+"&"+
-					"mcomDate="+$scope.mcomDate+"&"+
-					"bcomDate="+$scope.bcomDate+"&"+
+		var data = 	"name="+encodeURIComponent( $scope.name )+"&"+
+					"branchCutDate="+encodeURIComponent($scope.branchCutDate)+"&"+
+					"branchFreezeDate="+encodeURIComponent($scope.branchFreezeDate)+"&"+
+					"branchHardLockDate="+encodeURIComponent($scope.branchHardLockDate)+"&"+
+					"branchProductionDate="+encodeURIComponent($scope.branchProductionDate)+"&"+
+					"mcomDate="+encodeURIComponent($scope.mcomDate)+"&"+
+					"bcomDate="+encodeURIComponent($scope.bcomDate)+"&"+
 					"isActivated=true";
 		var save = ReleasesService.save(data);
 		$scope.toggleLoading('record');
@@ -204,6 +204,7 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 					$scope.toggleLoading('record');
 					if(data.meta.code == 200){
 						$scope.releasesList.push(data.data);
+						$scope.releasesList = ServiceUtils.sortArrayByField($scope.releasesList,'name',false);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -244,7 +245,7 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 				function(data){
 					$scope.toggleLoading('list');
 					if(data.meta.code == 200){
-						$scope.releasesList = data.dataList;
+						$scope.releasesList = ServiceUtils.sortArrayByField(data.dataList,'name',false);
 						console.log("ReleaseList : ",$scope.releasesList);
 					}
 					else{
@@ -262,5 +263,5 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 
 
 angular.module('releases',['ngAnimate','ui.router','ui-notification','angularFileUpload','ng.httpLoader','angularFileUpload'])
-	.controller('ReleasesController',['$scope','$state','Notification','context','ErrorUtils','DeleteService','$modal','UpdateObjectService','ReleasesService',ReleasesController])
+	.controller('ReleasesController',['$scope','$state','Notification','context','ErrorUtils','DeleteService','$modal','UpdateObjectService','ReleasesService','ServiceUtils',ReleasesController])
 	

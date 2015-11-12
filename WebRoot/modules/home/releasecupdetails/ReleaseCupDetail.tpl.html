@@ -117,14 +117,17 @@
 				                					<table style="font-size:12px; table-layout: fixed;" id="example1" class="table table-bordered table-striped  dataTable" >
 														<thead>
 															<tr>
-																<th style="text-align: center;" ng-repeat="col in ipmObject.columns" >{{col.name}}</th>
+																<th style="text-align: center;" ng-repeat="col in ipmObject.columns" >
+																	{{col.name}}
+																	<span style="color: green;" ng-if="col.name != 'Tasks'">({{col.value}})</span>
+																</th>
 																<th style="text-align: center;" >Action</th>
 															</tr>
 														</thead>
 														<tbody>
 															<tr ng-repeat="taskObj in ipmObject.taskList">
         														<td style="text-align: center;" ng-repeat="col in ipmObject.columns">
-        															<span editable-text="taskObj.{{col.name}}" e-name="taskObj.{{col.name}}"  e-form="rowform" e-required>
+        															<span editable-text="taskObj['{{col.name}}']" e-name="taskObj['{{col.name}}']"  e-form="rowform" e-required>
          	 															{{taskObj[col.name]}}
        			 													</span>
         														</td>

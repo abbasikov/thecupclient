@@ -22,6 +22,8 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 			remainingPercentageData : []
 	};
 	
+	var excludeColum = "MVPs,MOST,IPM,Status";
+	
 	$scope.ipmView  	= false;
 	$scope.detailView 	= true;
 	
@@ -155,9 +157,9 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	};
 	
 	$scope.saveTree = function(rowform,taskObject){
-		var colums = $scope.getColumsForTasksListInTree();
+		var colums = $scope.getColumsForTasksListInTree(null);
 		for(index in colums){
-			taskObject[colums[index].name] = rowform.$data["taskObj."+colums[index].name] 
+			taskObject[colums[index].name] = rowform.$data["taskObj['"+colums[index].name+"']"];
 		}
 		
 		$scope.reCalculateIpmTree();
@@ -249,7 +251,8 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 		$scope.ipmTree.ipms["IPM2"] = $scope.ipmTree.ipms["IPM2"] == null ? [] : $scope.ipmTree.ipms["IPM2"];
 		$scope.ipmTree.ipms["IPM3"] = $scope.ipmTree.ipms["IPM3"] == null ? [] : $scope.ipmTree.ipms["IPM3"];
 		$scope.ipmTree.ipms["IPM4"] = $scope.ipmTree.ipms["IPM4"] == null ? [] : $scope.ipmTree.ipms["IPM4"];
-
+		var oldIpm = '';
+		var picker = 0;
 		//For Adding
 		for(index in $scope.gridOptions.data){
 			var matrixRow = $scope.gridOptions.data[index];
@@ -257,20 +260,26 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 				var ipmObject = { mvpName : '',isCollapsed:true,columns:null,taskList:[{}] };
 				ipmObject.mvpName = matrixRow.MVPs;
 				
+				//Checking picket
+				picker = oldIpm == matrixRow.IPM ? picker : 0;
+				oldIpm = matrixRow.IPM;
+					
 				//Adding MOST variable
-				ipmObject.mostModel = matrixRow.MOSTModel;
+				ipmObject.mostModel = matrixRow.MOST;
 				
 				//Adding colums
-				ipmObject.columns = $scope.getColumsForTasksListInTree();
+				ipmObject.columns = $scope.getColumsForTasksListInTree(matrixRow);
 				
 				//Now add default tasks
 				ipmObject.taskList = $scope.getDefaultTasks(ipmObject.columns);
 				
 				//Before pushing in ipmTree check if the MVP already exists
-				if($scope.mvpAlreadyExists(matrixRow.IPM,ipmObject.mvpName,ipmObject.mostModel) == false)
+				if($scope.mvpAlreadyExists(matrixRow.IPM,ipmObject.mvpName,ipmObject.mostModel,ipmObject.columns) == false)
 					$scope.ipmTree.ipms[matrixRow.IPM].push(ipmObject);
 				else
 					console.log("MVP:"+ipmObject.mvpName+", MostModel:"+ipmObject.mostModel+" Already Exists in IPM:"+matrixRow.IPM+". Not adding.");
+				$scope.ipmTree.ipms[matrixRow.IPM][picker].columns = ipmObject.columns;	
+				picker++;
 			}
 		}
 		
@@ -291,6 +300,11 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 		$scope.updateTree();
 	}
 	
+	$scope.updateColums = function(ipm,columsList){
+		var particularIPMArray = $scope.ipmTree.ipms[ipm];
+		console.log("particularIPMArray ");
+	}
+	
 	$scope.combinationExistsInMatrix = function(mvpName,ipmName,mostModel){
 		for(index in $scope.gridOptions.data){
 			var matrixRow = $scope.gridOptions.data[index];
@@ -301,7 +315,7 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 		return false;
 	}
 	
-	$scope.mvpAlreadyExists = function(ipm,mvp,mostModel){
+	$scope.mvpAlreadyExists = function(ipm,mvp,mostModel,columns){
 		
 		var particularIPMArray = $scope.ipmTree.ipms[ipm];
 		for(var h = 0 ; h < particularIPMArray.length; h++){
@@ -312,17 +326,22 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 		return false;
 	}
 	
-	$scope.getColumsForTasksListInTree = function(){
+	$scope.getColumsForTasksListInTree = function(matrixRow){
 		
 		var columns = [];
 		columns.push({displayName:'Tasks', name:'Tasks'});
-		for(var i=2;i<$scope.selectedReleaseCup.matrix.columns.length;i++){
-			columns.push({
-				displayName	: $scope.selectedReleaseCup.matrix.columns[i].displayName, 
-				name		: $scope.selectedReleaseCup.matrix.columns[i].name
-				});
+		for(var i=0;i<$scope.selectedReleaseCup.matrix.columns.length;i++){
+			if(excludeColum.indexOf( $scope.selectedReleaseCup.matrix.columns[i].name) == -1){
+				columns.push({
+					displayName	: $scope.selectedReleaseCup.matrix.columns[i].displayName, 
+					name		: $scope.selectedReleaseCup.matrix.columns[i].name,
+					value		: (matrixRow == null) ? '0' : (matrixRow[$scope.selectedReleaseCup.matrix.columns[i].name] == undefined ) ? '0' : matrixRow[$scope.selectedReleaseCup.matrix.columns[i].name]
+					});
+			}
 		}
+		console.log("Colums: ",columns);
 		return columns;
+		
 	}
 	
 	$scope.getDefaultTasks = function(columsList){
@@ -341,9 +360,9 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 					if(rowIndex == 2)
 						obj[colName] = "Measurement";
 					if(rowIndex == 3)
-						obj[colName] = "SST-PRC";
-					if(rowIndex == 4)
 						obj[colName] = "Functional";
+					if(rowIndex == 4)
+						obj[colName] = "SST-PRC";
 					
 				}
 				else
@@ -376,7 +395,7 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 				$scope.gridOptions.columnDefs[i].type	 		= "text";
 				$scope.gridOptions.columnDefs[i].cellTemplate	= 'mapAddress.html';
 			}
-			else if($scope.gridOptions.columnDefs[i].name == "MOSTModel" ){
+			else if($scope.gridOptions.columnDefs[i].name == "MOST" ){
 				$scope.gridOptions.columnDefs[i].type	 				= "text";
 				$scope.gridOptions.columnDefs[i].editableCellTemplate 	= 'ui-grid/dropdownEditor';
 				//$scope.gridOptions.columnDefs[i].cellFilter 			= 'mapIPM';
@@ -537,8 +556,6 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	
 	$scope.rePopulatebarGraphData = function(){
 		$scope.barGraphData 			= [];
-		
-		var excludeColum = "MVPs,MOSTModel,IPM,Status";
 		
 		for(var i=0;i<$scope.gridOptions.columnDefs.length;i++){
 			if(excludeColum.indexOf( $scope.gridOptions.columnDefs[i].name) == -1){
