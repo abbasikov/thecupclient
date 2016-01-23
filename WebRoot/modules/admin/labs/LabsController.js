@@ -429,26 +429,33 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		var values 	= "values=";
 		var update  = false;
 		
+		if(selectedLabItem.name != updatedObj.labName){
+			names += "name"+";";
+			values += encodeURIComponent(updatedObj.labName)+";";
+			update = true;
+		}
+		
 		if(selectedLabItem.managerName != updatedObj.managerName){
-			names += "managerName"+",";
-			values += encodeURIComponent(updatedObj.managerName)+",";
+			names += "managerName"+";";
+			values += encodeURIComponent(updatedObj.managerName)+";";
 			update = true;
 		}
 		
 		if(selectedLabItem.pdmName != updatedObj.pdmName){
-			names += "pdmName"+",";
-			values += encodeURIComponent(updatedObj.pdmName)+",";
+			names += "pdmName"+";";
+			values += encodeURIComponent(updatedObj.pdmName)+";";
 			update = true;
 		}
 		
 		if(update){
-			var data = "uuid="+selectedLabItem.uuid+"&"+names+"&"+values+"&delimeter=,";
+			var data = "uuid="+selectedLabItem.uuid+"&"+names+"&"+values+"&delimiter=;";
 			var update = UpdateObjectService.save(data);
 			$scope.toggleListShow();
 			update.$promise.then(
 					function(data){
 						$scope.toggleListShow();
 						if(data.meta.code == 200){
+							$scope.selectedLabItem.name				= updatedObj.labName;
 							$scope.selectedLabItem.managerName 		= updatedObj.managerName;
 							$scope.selectedLabItem.pdmName		 	= updatedObj.pdmName;
 						}
@@ -687,6 +694,10 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					$scope.toggleComponentShow();
 					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
 				});
+	};
+	
+	$scope.showUsersByLab = function(){
+		
 	}
 	
 	$scope.getAllLabs();

@@ -198,7 +198,7 @@
 						<tbody>
 							<tr ng-repeat="lab in labsList | filter:searchTextForLab">
 								
-								<td>{{lab.name}}</td>
+								<td><span ng-click="showUsersByLab()" title="Click to see users list" style="text-decoration: underline;color: blue;cursor: pointer;">{{lab.name}}</span></td>
 								<td>{{lab.managerName}}</td>
 								<td>{{lab.pdmName}}</td>
 								<td>{{lab.isActivated == 'true' ? 'Yes' : 'No'  }}</td>
