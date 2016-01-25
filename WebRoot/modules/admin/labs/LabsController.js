@@ -1,3 +1,11 @@
+function LabUsersController($scope,$modalInstance,labItem){
+	$scope.labItem = labItem;
+	$scope.ok = function(){
+		$modalInstance.dismiss('cancel');
+	};
+	
+}
+
 function LabUpdateController($scope,$modalInstance,labItem){
 	
 	$scope.isError = false;
@@ -97,7 +105,7 @@ function UserUpdateController($scope,$modalInstance,userItem,labsList,GetAllLabs
 	}
 }
 
-function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUtils,RegisterService,DeleteService,$modal,UpdateObjectService,SysComponentService,DeleteSysComponentService,LabService,UsersService,GetAllLabsByUser,AssignLabToUser,PasswordResetService,ComponentsService,DeleteBusinessObject ){
+function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUtils,RegisterService,DeleteService,$modal,UpdateObjectService,SysComponentService,DeleteSysComponentService,LabService,UsersService,GetAllLabsByUser,AssignLabToUser,PasswordResetService,ComponentsService,DeleteBusinessObject, $filter ){
 	
 	$scope.rcOverlay = false;
 	$scope.rcLoading = false;
@@ -122,6 +130,8 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	$scope.usersList = [];
 	$scope.globalSystemComponents = [];
 	$scope.globalComponents = [];
+	$scope.csvDataArray=  [];
+	$scope.filename = "TheCup-LabsList";
 	
 	$scope.settingsLabs = {
 			displayProp: 'name', idProp: 'uuid'
@@ -144,6 +154,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 						Notification.success({message:"Record created successfully.", title: 'Success'});
 						$scope.labsList.push(data.data);
 						$scope.labsList = ServiceUtils.sortArrayByField($scope.labsList,'name',false); 
+						
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -227,6 +238,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					$scope.toggleListShow('lab');
 					if(data.meta.code == 200){
 						lab.isActivated = flag;
+						$scope.generateCsvData();
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -249,6 +261,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 						$scope.toggleListShow(toggleFlag);
 						if(data.meta.code == 200){
 							$scope.deleteItemList(index,list);
+							$scope.getAllLabs();
 						}
 						else{
 							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -281,8 +294,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		});
 		
 		modalInstanceForLab.result.then(function (updatedObj) {
-			 $scope.updateLab($scope.selectedLabItem, updatedObj);
-			 	 
+			 $scope.updateLab($scope.selectedLabItem, updatedObj);			 			 	 
 		    }, function () {
 		      
 		    });
@@ -416,6 +428,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				function(data){
 					$scope.toggleListShow('user');
 					console.log("Updated Lab Response : ",data);
+					$scope.getAllLabs();
 				},
 				function(error){
 					$scope.toggleListShow('user');
@@ -458,6 +471,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 							$scope.selectedLabItem.name				= updatedObj.labName;
 							$scope.selectedLabItem.managerName 		= updatedObj.managerName;
 							$scope.selectedLabItem.pdmName		 	= updatedObj.pdmName;
+							$scope.generateCsvData();
 						}
 						else{
 							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -501,6 +515,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					if(data.meta.code == 200){
 						Notification.success({message:"User Created", title: 'Success'});
 						$scope.usersList.push(data.data);
+						$scope.getAllLabs();
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -540,6 +555,23 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		$scope.globalComponents.push.apply($scope.globalComponents, rest);
 	};
 	
+	$scope.generateCsvData = function(){
+		$scope.csvDataArray = [];
+		$scope.csvDataArray.push({});
+		for(index in $scope.labsList){
+			var labObject = {
+								labName		: $scope.labsList[index].name,
+								managerName	: $scope.labsList[index].managerName,
+								pdmName		: $scope.labsList[index].pdmName,
+								isActivated : $scope.labsList[index].isActivated == 'true' ? 'Yes' : 'No',
+								createdBy 	: $scope.labsList[index].createdBy,
+								createdOn	: $filter('date')( $scope.labsList[index].createdOnISO8601),
+								userCount	: $scope.labsList[index].users.length
+							};
+			$scope.csvDataArray.push(labObject);
+		}
+	}
+	
 	$scope.getAllLabs = function(){
 		var labs = LabService.get();
 		
@@ -547,6 +579,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				function(data){
 					if(data.meta.code == 200){
 						$scope.labsList = ServiceUtils.sortArrayByField(data.dataList,'name',false);
+						$scope.generateCsvData()
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -563,7 +596,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		get.$promise.then(
 				function(data){
 					if(data.meta.code == 200){
-						$scope.usersList = ServiceUtils.sortArrayByField(data.dataList,'firstName',false);
+						$scope.usersList = ServiceUtils.sortArrayByField(data.dataList,'firstName',false);						
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -696,9 +729,25 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 				});
 	};
 	
-	$scope.showUsersByLab = function(){
+	$scope.showUsersByLab = function(index){
 		
+		$scope.selectedLabItem = $scope.labsList[index];
+		
+		var modalInstanceForLab = $modal.open({
+		      templateUrl	: 'modules/admin/labs/labsUsers.tpl.html',
+		      controller	: LabUsersController,
+		      scope			: $scope,
+		      resolve		: {
+		          labItem: function () {
+		            return $scope.selectedLabItem;
+		          }
+		        }});
+	
 	}
+	
+	$scope.getHeaderForCSV = function () {
+		return ["Lab Name", "Manager Name", "PDM Name","Activated","CreatedBy", "CreatedOn", "Users Count"]
+	};
 	
 	$scope.getAllLabs();
 	$scope.getAllUsers();
@@ -707,6 +756,6 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 }
 
 
-angular.module('labs',['ngAnimate','ui.router','ui-notification','angularFileUpload','ng.httpLoader','angularFileUpload'])
-	.controller('LabsController',['$scope','$state','Notification','context','ErrorUtils','ServiceUtils','RegisterService','DeleteService','$modal','UpdateObjectService','SysComponentService','DeleteSysComponentService','LabService','UsersService','GetAllLabsByUser','AssignLabToUser','PasswordResetService','ComponentsService','DeleteBusinessObject ',LabsController])
+angular.module('labs',['ngAnimate','ui.router','ui-notification','angularFileUpload','ng.httpLoader','angularFileUpload','ngSanitize', 'ngCsv'])
+	.controller('LabsController',['$scope','$state','Notification','context','ErrorUtils','ServiceUtils','RegisterService','DeleteService','$modal','UpdateObjectService','SysComponentService','DeleteSysComponentService','LabService','UsersService','GetAllLabsByUser','AssignLabToUser','PasswordResetService','ComponentsService','DeleteBusinessObject ','$filter',LabsController])
 	

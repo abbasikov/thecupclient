@@ -1,20 +1,41 @@
 <div class="modal-header">
-	<h3 class="modal-title">Update Lab</h3>
+	<h3 class="modal-title">{{labItem.name}}</h3>	
 </div>
-<div class="modal-body">
-	<form role="form" name="labForm" novalidate>
-		<div class="form-group" style="margin-bottom: 10px" ng-class="(labForm.labName.$dirty && labForm.labName.$invalid) ? 'form-group has-error' : 'form-group' ">
-			<input type="text" name="labName" ng-model="updatedObj.labName" placeholder="Enter Lab Name" class="form-control" required>
-		</div>
-		<div class="form-group" style="margin-bottom: 10px" ng-class="(labForm.managerName.$dirty && labForm.managerName.$invalid) ? 'form-group has-error' : 'form-group' ">
-			<input type="text" name="managerName" ng-model="updatedObj.managerName" placeholder="Enter Manager Name" class="form-control" required>
-		</div>
-		<div class="form-group" style="margin-bottom: 10px">
-			<input type="text" name="pdmName" ng-model="updatedObj.pdmName" placeholder="Enter PDM Name" class="form-control">
-		</div>			
-	</form>
+<div class="modal-body" style="overflow-y:scroll;height:300px;">
+	
+	
+	<div class="box box-success">
+				<div class="box-header">
+					<h3 class="box-title">Total Users: {{labItem.users.length}}</h3>					
+				</div>	
+				<!-- /.box-header -->
+				<div class="box-body table-responsive no-padding">
+					<table style="font-size:12px" id="example1" class="table table-bordered table-striped dataTable">
+						<thead>
+							<tr>
+								<th>First Name</th>
+								<th>Last Name</th>
+								<th>Email</th>
+								<th>User Name</th>								
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="user in labItem.users" ng-if="user.username != 'ftcadmin'">
+								
+								<td>{{user.firstName}}</td>
+								<td>{{user.lastName}}</td>
+								<td>{{user.userEmail}}</td>
+								<td>{{user.username}}</td>								
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+				<!-- /.box-body -->
+			</div>
+	
+	
 </div>
 <div class="modal-footer">
-	<button ng-click="update()" ng-class="(labForm.labName.$error.required || labForm.managerName.$error.required || labForm.username.$error.required) ? 'btn btn-primary disabled' : 'btn btn-primary'">Update</button>
-	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-success" ng-click="ok()">OK</button>
 </div>

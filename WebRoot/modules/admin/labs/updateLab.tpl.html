@@ -1,20 +1,31 @@
-<div class="modal-header">
-	<h3 class="modal-title">Update Lab</h3>
-</div>
-<div class="modal-body">
-	<form role="form" name="labForm" novalidate>
-		<div class="form-group" style="margin-bottom: 10px" ng-class="(labForm.labName.$dirty && labForm.labName.$invalid) ? 'form-group has-error' : 'form-group' ">
-			<input type="text" name="labName" ng-model="updatedObj.labName" placeholder="Enter Lab Name" class="form-control" required>
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Update Lab</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form" name="labForm" novalidate>
+					<div class="form-group" style="margin-bottom: 10px"
+						ng-class="(labForm.labName.$dirty && labForm.labName.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input type="text" name="labName" ng-model="updatedObj.labName"
+							placeholder="Enter Lab Name" class="form-control" required>
+					</div>
+					<div class="form-group" style="margin-bottom: 10px"
+						ng-class="(labForm.managerName.$dirty && labForm.managerName.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<input type="text" name="managerName"
+							ng-model="updatedObj.managerName"
+							placeholder="Enter Manager Name" class="form-control" required>
+					</div>
+					<div class="form-group" style="margin-bottom: 10px">
+						<input type="text" name="pdmName" ng-model="updatedObj.pdmName"
+							placeholder="Enter PDM Name" class="form-control">
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-click="update()"
+					ng-class="(labForm.labName.$error.required || labForm.managerName.$error.required || labForm.username.$error.required) ? 'btn btn-primary disabled' : 'btn btn-primary'">Update</button>
+				<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+			</div>
 		</div>
-		<div class="form-group" style="margin-bottom: 10px" ng-class="(labForm.managerName.$dirty && labForm.managerName.$invalid) ? 'form-group has-error' : 'form-group' ">
-			<input type="text" name="managerName" ng-model="updatedObj.managerName" placeholder="Enter Manager Name" class="form-control" required>
-		</div>
-		<div class="form-group" style="margin-bottom: 10px">
-			<input type="text" name="pdmName" ng-model="updatedObj.pdmName" placeholder="Enter PDM Name" class="form-control">
-		</div>			
-	</form>
-</div>
-<div class="modal-footer">
-	<button ng-click="update()" ng-class="(labForm.labName.$error.required || labForm.managerName.$error.required || labForm.username.$error.required) ? 'btn btn-primary disabled' : 'btn btn-primary'">Update</button>
-	<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
-</div>
+	

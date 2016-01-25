@@ -170,15 +170,15 @@
 					<h3 class="box-title">Labs List</h3>
 					<div class="box-tools">
 						<div class="input-group">
-							<input type="text" name="table_search"
-								class="form-control input-sm pull-right" style="width: 150px;"
-								placeholder="Search" ng-model="searchTextForLab">
+							<input type="text" name="table_search" class="form-control input-sm pull-right" style="width: 150px;" placeholder="Search" ng-model="searchTextForLab">
+							<input ng-csv="csvDataArray" csv-header="getHeaderForCSV()" filename={{filename}} type="button" class="btn btn-default btn-sm pull-right" style="margin-right: 2px;font-weight: bold;" value="Export to CSV">
+							
 							<div class="input-group-btn">
 								<button class="btn btn-sm btn-default">
 									<i class="fa fa-search"></i>
 								</button>
-							</div>
-						</div>
+							</div>							
+						</div>						
 					</div>
 				</div>
 				<!-- /.box-header -->
@@ -198,7 +198,7 @@
 						<tbody>
 							<tr ng-repeat="lab in labsList | filter:searchTextForLab">
 								
-								<td><span ng-click="showUsersByLab()" title="Click to see users list" style="text-decoration: underline;color: blue;cursor: pointer;">{{lab.name}}</span></td>
+								<td><span ng-click="showUsersByLab($index)" title="Click to see users list" style="text-decoration: underline;color: blue;cursor: pointer;">{{lab.name}}</span></td>
 								<td>{{lab.managerName}}</td>
 								<td>{{lab.pdmName}}</td>
 								<td>{{lab.isActivated == 'true' ? 'Yes' : 'No'  }}</td>
@@ -246,7 +246,7 @@
 					<table style="font-size:12px" id="example1" class="table table-bordered table-striped dataTable" ng-if="usersList.length>0">
 						<thead>
 							<tr>
-								<th>Frist Name</th>
+								<th>First Name</th>
 								<th>Last Name</th>
 								<th>Email</th>
 								<th>User Name</th>
