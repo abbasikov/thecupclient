@@ -26,6 +26,7 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 	
 	$scope.ipmView  	= false;
 	$scope.detailView 	= true;
+	$scope.resize = true;
 	
 	$scope.ipmTree		= [];
 	
@@ -62,14 +63,15 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 			enableRowSelection: true,
 			enableHorizontalScrollbar : 1,
 			enableVerticalScrollbar : 1,
+			enableColumnResizing: true,
 			showGridFooter: true,
 		    showColumnFooter: true,
 			columnDefs 		: [],
 			data			: []
 	};
-	$scope.resize = true;
 	
 	$scope.updateMatrix = function(){
+		
 		var names 	= "names=matrixJson";
 		$scope.selectedReleaseCup.matrix.data = $scope.gridOptions.data;
 		var values 	= "values="+encodeURIComponent(angular.toJson($scope.selectedReleaseCup.matrix))+";;;";
@@ -388,9 +390,10 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 			$scope.gridOptions.columnDefs[i].enableCellEdit = true;
 			$scope.gridOptions.columnDefs[i].enableSorting = false;
 			$scope.gridOptions.columnDefs[i].enableColumnMenu = false; 
-			if($scope.gridOptions.columnDefs.length>6){
-				$scope.gridOptions.columnDefs[i].width = 150;
+			if($scope.gridOptions.columnDefs.length>8){
+				$scope.gridOptions.columnDefs[i].width = 150;				
 			}
+			
 			if($scope.gridOptions.columnDefs[i].name == "MVPs" ){
 				$scope.gridOptions.columnDefs[i].type	 		= "text";
 				$scope.gridOptions.columnDefs[i].cellTemplate	= 'mapAddress.html';
@@ -419,6 +422,7 @@ function ReleaseCupDetailController($scope,$stateParams,$state,Notification,load
 				$scope.gridOptions.columnDefs[i].type	 		= "number";
 				$scope.gridOptions.columnDefs[i].aggregationType = uiGridConstants.aggregationTypes.sum;
 				$scope.gridOptions.columnDefs[i].footerCellTemplate = $scope.footerCellTempateFunc();
+				//$scope.gridOptions.columnDefs[i].enableColumnMenu	= true;
 			}
 				
 			$scope.gridOptions.columnDefs[i].cellClass			= 'grid-text-align';

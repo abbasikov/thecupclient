@@ -1,4 +1,45 @@
-function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils,context,$timeout,ReleasesService,ReleasesCupService,DeleteBusinessObject,SysComponentService,ComponentsByLabService,UpdateObjectService,DeleteRelationshipService,ServiceUtils){
+function ReleaseCupUpdateController($scope, $modalInstance, releaseCupItem, $filter)
+{
+	$scope.isError = false;
+	$scope.errorMsg = "";
+	$scope.sysComponentsList = angular.copy($scope.globalSysComponents);
+	
+	$scope.updatedObj = {
+			releaseName: releaseCupItem.release.name,
+			devDays: parseInt(releaseCupItem.devDays),
+			regressionDays:	parseInt(releaseCupItem.regressionDays),
+			updatedSysComponents: []
+	};
+	
+	//mark sys components true that exists 
+	for(k in releaseCupItem.sysComponents){
+		var item = ($filter('filter')($scope.sysComponentsList, { uuid: releaseCupItem.sysComponents[k].uuid }, true)[0]);
+		item.checked = true;		
+	}
+	
+	$scope.update = function(){
+		var atleastOneFound = false;
+		for(index in $scope.sysComponentsList){
+			if($scope.sysComponentsList[index].checked){
+				atleastOneFound = true;
+				$scope.updatedObj.updatedSysComponents.push($scope.sysComponentsList[index]);
+			}
+				
+		}
+		
+		if(!atleastOneFound){
+			alert("Please select atleast one skill");
+		}
+		else
+			$modalInstance.close($scope.updatedObj);
+	};
+	
+	$scope.cancel = function(){
+		$modalInstance.dismiss('cancel');
+	};
+}
+
+function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils,context,$timeout,ReleasesService,ReleasesCupService,DeleteBusinessObject,SysComponentService,ComponentsByLabService,UpdateObjectService,DeleteRelationshipService,ServiceUtils, $filter, $modal){
 	
 	$scope.labUuid = $scope.profileObject.labs[0].uuid;
 	$scope.availableDevDays = "";
@@ -37,7 +78,7 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 					"availableDevDays="+$scope.availableDevDays+"&" +
 					"devDays="+$scope.devDays+"&" +
 					"regressionDays="+$scope.regDays+"&"+
-					"sysComponents="+$scope.getSelectedSysComponentsUuids()+"&"+
+					"sysComponents="+$scope.getSelectedSysComponentsUuids($scope.globalSysComponents)+"&"+
 					"createdBy="+$scope.profileObject.firstName+" "+$scope.profileObject.lastName;
 		console.log("data : ",data);
 		var rel = ReleasesCupService.save(data);
@@ -59,15 +100,14 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 			});
 	};
 	
-	$scope.getSelectedSysComponentsUuids = function(){
-		var list = "";
-		for(index in $scope.globalSysComponents){
-			if($scope.globalSysComponents[index].checked){
-				list +=  $scope.globalSysComponents[index].uuid+";";
+	$scope.getSelectedSysComponentsUuids = function(list){
+		var selectedList = "";
+		for(index in list){
+			if(list[index].checked){
+				selectedList +=  list[index].uuid+";";
 			}
-		}
-		
-		return list;
+		}		
+		return selectedList;
 	};
 	
 	$scope.validate = function(){
@@ -185,6 +225,7 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 							$scope.globalSysComponents.push(obj);
 						}
 						$scope.globalSysComponents = ServiceUtils.sortArrayByField($scope.globalSysComponents,'name',false);
+						console.log("GlobalSysComponents: ",$scope.globalSysComponents);
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -195,25 +236,79 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 			});
 	};
 	
-	$scope.deleteReleaseCup = function(uuid,index){
+	$scope.deleteReleaseCup = function(uuid){
+		var res = confirm("Are you sure you want to delete ? ");
+		if(res == true){
+			var rel = DeleteBusinessObject.save("uuid="+uuid);
+			$scope.toggleTableListLoading();
+			rel.$promise.then(
+					function(data){
+						$scope.toggleTableListLoading();
+						if(data.meta.code == 200){
+							$scope.$parent.deleteReleaseCupFromList(uuid);
+						}
+						else{
+							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
+						}
+					},
+					function(error){
+						$scope.toggleTableListLoading();
+						Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
+				});
+		}
+	};
+	
+	$scope.editReleaseCup = function(uuid){
+		$scope.selectedReleaseCup = $filter('filter')($scope.$parent.releaseCupsList, { uuid: uuid }, true)[0];
+		console.log("BEFORE::SelectedReleaseCup : ", $scope.selectedReleaseCup);
+		var modalInstanceForReleaseCup = $modal.open({
+		      templateUrl	: 'modules/home/releasecups/updateReleaseCup.tpl.html',
+		      controller	: ReleaseCupUpdateController,
+		      scope			: $scope,
+		      resolve		: {
+		          releaseCupItem: function () {
+		            return $scope.selectedReleaseCup;
+		          }
+		        }
+		});
 		
-		var rel = DeleteBusinessObject.save("uuid="+uuid);
-		$scope.toggleTableListLoading();
-		rel.$promise.then(
+		modalInstanceForReleaseCup.result.then(function (updatedObj) {
+			console.log("UpdatedObject: ",updatedObj);
+			$scope.handleUpdateOfReleaseCup(updatedObj);
+		    }, function () {
+		      
+		    });
+	};
+	
+	$scope.handleUpdateOfReleaseCup = function(updatedObj){
+		$scope.selectedReleaseCup.sysComponents = angular.copy(updatedObj.updatedSysComponents);
+		var matrix = JSON.parse($scope.selectedReleaseCup.matrix); 
+		var coreColumns = matrix.columns.slice(0, 4);
+		var updatedAllColums = coreColumns.concat($scope.selectedReleaseCup.sysComponents);
+		matrix.columns = updatedAllColums;
+		$scope.selectedReleaseCup.matrix = matrix;
+		console.log("updatedMatrix:",$scope.selectedReleaseCup.matrix);
+		
+		
+		var names 	= "names=matrixJson;;;sysComponents";
+		var values 	= "values="+encodeURIComponent(angular.toJson($scope.selectedReleaseCup.matrix))+";;;"+$scope.getSelectedSysComponentsUuids($scope.selectedReleaseCup.sysComponents);
+		var data = "uuid="+$scope.selectedReleaseCup.uuid+"&"+names+"&"+values+"&"+"delimiter=;;;";
+		var update = UpdateObjectService.save(data);
+		update.$promise.then(
 				function(data){
-					$scope.toggleTableListLoading();
-					if(data.meta.code == 200){
-						$scope.$parent.deleteReleaseCupFromList(index);
-					}
-					else{
+					if(data.meta.code != 200){
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
 					}
+					else{
+						Notification.success({message:'ReleaseCup updated successfully', title: 'Success'});
+						$scope.selectedReleaseCup.matrix = JSON.stringify(matrix);
+					}
+					
 				},
 				function(error){
-					$scope.toggleTableListLoading();
-					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
-			});
-	};
+					console.log("Error: ",error);
+				});
+	}
 	
 	$scope.deleteItemFromList = function(index,list){
 		var from 	= index;
@@ -314,9 +409,11 @@ function ReleaseCupsController($scope,$state,Notification,loadContext,ErrorUtils
 	$scope.getAllReleasesList();
 	$scope.getAllSystemComponents();
 	$scope.getAllLabComponents();
+	
+	$scope.$parent.getAllReleaseCupList(false);
 		
 }
 
 
 angular.module('releasecups',['ngAnimate','ui.router','ui-notification'])
-	.controller('ReleaseCupsController',['$scope','$state','Notification','loadContext','ErrorUtils','context','$timeout','ReleasesService','ReleasesCupService','DeleteBusinessObject','SysComponentService','ComponentsByLabService','UpdateObjectService','DeleteRelationshipService','ServiceUtils',ReleaseCupsController]);
+	.controller('ReleaseCupsController',['$scope','$state','Notification','loadContext','ErrorUtils','context','$timeout','ReleasesService','ReleasesCupService','DeleteBusinessObject','SysComponentService','ComponentsByLabService','UpdateObjectService','DeleteRelationshipService','ServiceUtils','$filter','$modal',ReleaseCupsController]);

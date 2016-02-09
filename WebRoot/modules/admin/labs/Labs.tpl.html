@@ -205,10 +205,10 @@
 								<td>{{lab.createdBy}}</td>
 								<td>{{lab.createdOnISO8601 | date}}</td>
 								<td>
-									<button class="btn btn-success btn-xs" ng-click="editLab($index)">Edit</button>
+									<button class="btn btn-success btn-xs" ng-click="editLab(lab.uuid)">Edit</button>
 									<button ng-if="lab.isActivated == 'true'" class="btn btn-primary btn-xs" ng-click="activateLab(lab,'false')">DeActivate</button>
 									<button ng-if="lab.isActivated == 'false'" class="btn btn-primary btn-xs" ng-click="activateLab(lab,'true')">Activate</button>
-									<button ng-if="lab.isActivated == 'false'" class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(lab.uuid,$index,labsList,'lab')">Perm Delete</button>
+									<button ng-if="lab.isActivated == 'false'" class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(lab.uuid,labsList,'lab')">Perm Delete</button>
 																				
 								</td>
 							</tr>
@@ -269,9 +269,9 @@
 								<td>{{user.createdBy}}</td>
 								<td>{{user.createdOnISO8601 | date}}</td>
 								<td>
-									<button class="btn btn-success btn-xs" ng-click="editUser($index)">Edit</button>
-									<button class="btn btn-primary btn-xs" ng-click="resetPassword($index)">Reset Password</button>
-									<button class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(user.uuid,$index,usersList,'user')">Perm Delete</button>
+									<button class="btn btn-success btn-xs" ng-click="editUser(user.uuid)">Edit</button>
+									<button class="btn btn-primary btn-xs" ng-click="resetPassword(user.uuid)">Reset Password</button>
+									<button class="btn btn-danger btn-xs" ng-click="deleteBusinessObject(user.uuid,usersList,'user')">Perm Delete</button>
 								</td>
 							</tr>
 						</tbody>

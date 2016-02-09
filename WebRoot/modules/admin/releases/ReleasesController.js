@@ -22,7 +22,7 @@ function ReleasesUpdateController($scope,$modalInstance,releaseItem){
 	
 }
 
-function ReleasesController($scope,$state,Notification,context,ErrorUtils,DeleteService,$modal,UpdateObjectService,ReleasesService,ServiceUtils){
+function ReleasesController($scope,$state,Notification,context,ErrorUtils,DeleteService,$modal,UpdateObjectService,ReleasesService,ServiceUtils, $filter){
 	$scope.name					= "";
 	$scope.branchCutDate  		= "";
 	$scope.branchFreezeDate		= "";
@@ -64,9 +64,8 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 		}
 	}
 	
-	$scope.editRelease = function(index){
-		$scope.selectedReleaseItem = $scope.releasesList[index];
-		
+	$scope.editRelease = function(uuid){
+		$scope.selectedReleaseItem = $filter('filter')($scope.releasesList, { uuid: uuid }, true)[0];
 		var modalInstance = $modal.open({
 		      templateUrl	: 'modules/admin/releases/updateRelease.tpl.html',
 		      controller	: ReleasesUpdateController,
@@ -155,7 +154,7 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 		}, function () {});
 	}
 	
-	$scope.deleteBusinessObject = function(uuid,index,list,toggleFlag){
+	$scope.deleteBusinessObject = function(uuid,list,toggleFlag){
 		var res = confirm("Are you sure you want to delete ? ");
 		if (res == true) {
 			var labs = DeleteService.save("uuid="+uuid);
@@ -164,7 +163,7 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 					function(data){
 						$scope.toggleLoading(toggleFlag);
 						if(data.meta.code == 200){
-							$scope.deleteItemList(index,list);
+							$scope.deleteItemList(uuid,list);
 						}
 						else{
 							Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -180,8 +179,8 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 		
 	};
 	
-	$scope.deleteItemList = function(index,list){
-		var from 	= index;
+	$scope.deleteItemList = function(uuid,list){		
+		var from 	= ServiceUtils.getIndexByUuid(list, uuid);
 		var to		= 0;
 		var rest = list.slice((to || from) + 1 || list.length);
 		list.length = from < 0 ? list.length + from : from;
@@ -263,5 +262,5 @@ function ReleasesController($scope,$state,Notification,context,ErrorUtils,Delete
 
 
 angular.module('releases',['ngAnimate','ui.router','ui-notification','angularFileUpload','ng.httpLoader','angularFileUpload'])
-	.controller('ReleasesController',['$scope','$state','Notification','context','ErrorUtils','DeleteService','$modal','UpdateObjectService','ReleasesService','ServiceUtils',ReleasesController])
+	.controller('ReleasesController',['$scope','$state','Notification','context','ErrorUtils','DeleteService','$modal','UpdateObjectService','ReleasesService','ServiceUtils','$filter',ReleasesController])
 	

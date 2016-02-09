@@ -1,4 +1,4 @@
-function TeamMembersController($scope,$state,Notification,loadContext,ErrorUtils,context,$timeout,ReleasesService,ReleasesCupService,DeleteBusinessObject,SysComponentService,UsersService,GetAllUsersByLab){
+function TeamMembersController($scope,$state,Notification,loadContext,ErrorUtils,context,$timeout,ReleasesService,ReleasesCupService,DeleteBusinessObject,SysComponentService,UsersService,GetAllUsersByLab, ServiceUtils, $filter){
 	$scope.$parent.navsection = -2;
 	$scope.tmOverlay 	= false;
 	$scope.tmLoading	= false;
@@ -37,27 +37,37 @@ function TeamMembersController($scope,$state,Notification,loadContext,ErrorUtils
 		
 	}
 	
-	$scope.deleteUser = function(uuid,index){
-		var rel = DeleteBusinessObject.save("uuid="+uuid);
-		$scope.toggleListLoading();
-		rel.$promise.then(
-				function(data){
-					$scope.toggleListLoading();
-					if(data.meta.code == 200){
-						$scope.deleteItemFromLabsList(index,$scope.usersList);
-					}
-					else{
-						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
-					}
-				},
-				function(error){
-					$scope.toggleListLoading();
-					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
-			});
+	$scope.deleteUser = function(uuid){
+		var selectedUser = $filter('filter')($scope.usersList, { uuid: uuid }, true)[0];
+		var res = confirm("Are you sure you want to delete ? ");
+		if(res == true){
+			if(selectedUser.isSuperAdmin != 'true'){
+				var rel = DeleteBusinessObject.save("uuid="+uuid);
+				$scope.toggleListLoading();
+				rel.$promise.then(
+						function(data){
+							$scope.toggleListLoading();
+							if(data.meta.code == 200){
+								$scope.deleteItemFromUsersList(uuid,$scope.usersList);
+							}
+							else{
+								Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
+							}
+						},
+						function(error){
+							$scope.toggleListLoading();
+							Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
+					});
+			}
+			else{
+				Notification.error({message:'The user is SuperAdmin. Unable to delete.', title: 'Error'});
+			}
+			
+		}		
 	}
 	
-	$scope.deleteItemFromLabsList = function(index,list){
-		var from 	= index;
+	$scope.deleteItemFromUsersList = function(uuid,list){
+		var from 	= ServiceUtils.getIndexByUuid(list, uuid);
 		var to		= 0;
 		var rest = list.slice((to || from) + 1 || list.length);
 		list.length = from < 0 ? list.length + from : from;
@@ -118,5 +128,5 @@ function TeamMembersController($scope,$state,Notification,loadContext,ErrorUtils
 	
 }
 
-angular.module('teammemebers',['ngAnimate','ui.router','ui-notification'])
-	.controller('TeamMembersController',['$scope','$state','Notification','loadContext','ErrorUtils','context','$timeout','ReleasesService','ReleasesCupService','DeleteBusinessObject','SysComponentService','UsersService','GetAllUsersByLab',TeamMembersController]);
+angular.module('teammemebers',['ngAnimate','ui.router','ui-notification'])	
+	.controller('TeamMembersController',['$scope','$state','Notification','loadContext','ErrorUtils','context','$timeout','ReleasesService','ReleasesCupService','DeleteBusinessObject','SysComponentService','UsersService','GetAllUsersByLab','ServiceUtils','$filter',TeamMembersController]);

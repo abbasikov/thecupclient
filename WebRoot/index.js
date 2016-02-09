@@ -76,7 +76,7 @@ function config($stateProvider, $urlRouterProvider,$httpProvider){
 	
 }
 
-angular.module('theCupApp',['ngImgCrop','angucomplete','ui.router', 'ngAnimate','ngResource','context.service','login','rest.service','utils','ngCookies','xeditable','ui.bootstrap','ngTagsInput','angularjs-dropdown-multiselect','ngTouch','ui.grid','ui.grid.edit','ui.grid.selection','ui.grid.grouping','angular.morris-chart','ui.tree','agGrid','xeditable','ftc.filters','ngSanitize','ngCsv'])
+angular.module('theCupApp',['ngImgCrop','angucomplete','ui.router', 'ngAnimate','ngResource','context.service','login','rest.service','utils','ngCookies','xeditable','ui.bootstrap','ngTagsInput','angularjs-dropdown-multiselect','ngTouch','ui.grid','ui.grid.edit','ui.grid.selection','ui.grid.grouping','ui.grid.autoResize','ui.grid.resizeColumns','angular.morris-chart','ui.tree','agGrid','xeditable','ftc.filters','ngSanitize','ngCsv'])
 	.config(config)
 	.factory('myHttpInterceptor', function($q) {
 	    return {

@@ -134,7 +134,10 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	$scope.filename = "TheCup-LabsList";
 	
 	$scope.settingsLabs = {
-			displayProp: 'name', idProp: 'uuid'
+			displayProp: 'name', 
+			idProp: 'uuid',
+			scrollable :true,
+			scrollableHeight : 180
 	}
 	
 	$scope.submitLab = function(){
@@ -251,7 +254,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		
 	}
 	
-	$scope.deleteBusinessObject = function(uuid,index,list,toggleFlag){
+	$scope.deleteBusinessObject = function(uuid,list,toggleFlag){
 		var res = confirm("Are you sure you want to delete ? ");
 		if (res == true) {
 			var labs = DeleteService.save("uuid="+uuid);
@@ -260,7 +263,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					function(data){
 						$scope.toggleListShow(toggleFlag);
 						if(data.meta.code == 200){
-							$scope.deleteItemList(index,list);
+							$scope.deleteItemList(uuid,list);
 							$scope.getAllLabs();
 						}
 						else{
@@ -278,9 +281,9 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	};
 	
 	
-	$scope.editLab = function(index){
+	$scope.editLab = function(uuid){
 		
-		$scope.selectedLabItem = $scope.labsList[index];
+		$scope.selectedLabItem = $filter('filter')($scope.labsList, { uuid: uuid }, true)[0];
 		
 		var modalInstanceForLab = $modal.open({
 		      templateUrl	: 'modules/admin/labs/updateLab.tpl.html',
@@ -301,9 +304,9 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		 
 	};
 	
-	$scope.editUser = function(index){
+	$scope.editUser = function(uuid){
 		
-		$scope.selectedUserItem = $scope.usersList[index];
+		$scope.selectedUserItem = $filter('filter')($scope.usersList, { uuid: uuid }, true)[0];
 		
 		var modalInstanceUser = $modal.open({
 		      templateUrl	: 'modules/admin/labs/updateUser.tpl.html',
@@ -398,8 +401,8 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 		$scope.updateLabAssignmentOfUser(updatedObj.selectedLabs,selectedUserItem.uuid);
 	};
 	
-	$scope.resetPassword = function(index){
-		var user = $scope.usersList[index];
+	$scope.resetPassword = function(uuid){
+		var user = $filter('filter')($scope.usersList, { uuid: uuid }, true)[0];
 		var res = confirm("Are you sure you want to reset password ? ");
 		if (res == true) {
 		var save = PasswordResetService.save("username="+user.username);
@@ -487,8 +490,8 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	};
 	
 	
-	$scope.deleteItemList = function(index,list){
-		var from 	= index;
+	$scope.deleteItemList = function(uuid,list){
+		var from 	= ServiceUtils.getIndexByUuid(list, uuid);
 		var to		= 0;
 		var rest = list.slice((to || from) + 1 || list.length);
 		list.length = from < 0 ? list.length + from : from;
@@ -574,9 +577,10 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 	
 	$scope.getAllLabs = function(){
 		var labs = LabService.get();
-		
+		$scope.toggleListShow('lab');
 		labs.$promise.then(
 				function(data){
+					$scope.toggleListShow('lab');
 					if(data.meta.code == 200){
 						$scope.labsList = ServiceUtils.sortArrayByField(data.dataList,'name',false);
 						$scope.generateCsvData()
@@ -586,15 +590,17 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					}
 				},
 				function(error){
+					$scope.toggleListShow('lab');
 					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
 				});
 	};
 	
 	$scope.getAllUsers = function(){
 		var get = UsersService.get();
-		
+		$scope.toggleListShow('user');
 		get.$promise.then(
 				function(data){
+					$scope.toggleListShow('user');
 					if(data.meta.code == 200){
 						$scope.usersList = ServiceUtils.sortArrayByField(data.dataList,'firstName',false);						
 					}
@@ -603,6 +609,7 @@ function LabsController($scope,$state,Notification,context,ErrorUtils,ServiceUti
 					}
 				},
 				function(error){
+					$scope.toggleListShow('user');
 					Notification.error({message: "Some error occurred. Please try again later.", title: 'Error'});
 				});
 	}

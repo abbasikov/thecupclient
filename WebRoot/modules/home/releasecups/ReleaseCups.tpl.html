@@ -123,9 +123,8 @@
 								<th>Hard Lock Date</th>
 								<th>MCOM Date</th>
 								<th>BCOM Date</th>
-								<th>Available Dev Days</th>
 								<th>Dev Days</th>
-								<th>Regression Days</th>
+								<th>End to End Regression Days</th>
 								<th>Action</th>
 							</tr>							
 						</thead>
@@ -137,11 +136,11 @@
 								<td>{{rc.release.branchHardLockDate}}</td>
 								<td>{{rc.release.mcomDate}}</td>
 								<td>{{rc.release.bcomDate}}</td>
-								<td>{{rc.availableDevDays}}</td>
 								<td>{{rc.devDays}}</td>
 								<td>{{rc.regressionDays}}</td>
 								<td>
-									<button class="btn btn-danger btn-xs" ng-click="deleteReleaseCup(rc.uuid,$index)">Delete</button>											
+									<button class="btn btn-success btn-xs" ng-click="editReleaseCup(rc.uuid)">Edit</button>
+									<button class="btn btn-danger btn-xs" ng-click="deleteReleaseCup(rc.uuid)">Delete</button>											
 								</td>
 							</tr>
 							

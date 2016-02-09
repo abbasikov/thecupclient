@@ -60,7 +60,19 @@ angular.module('utils',[])
 						overlayParam = true;
 						loadingParam = true;
 					}
+				},
+				getIndexByUuid : function(list, uuid){
+					for(index in list){
+						if(list[index].uuid == uuid){
+							console.log("IndexByUUid: "+index);
+							return parseInt(index);
+						}
+							
+					}
+					console.log("IndexByUUid: -1");
+					return -1;					
 				}
+				
 		};
 		
 		return service;

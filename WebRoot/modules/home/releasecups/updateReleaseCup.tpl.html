@@ -1,0 +1,35 @@
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3 class="modal-title">Update ReleaseCup</h3>
+			</div>
+			<div class="modal-body">
+				<form role="form" name="releaseCupForm" novalidate>
+					<div class="form-group" style="margin-bottom: 10px">
+						<label>ReleaseName:</label>
+						<input type="text" ng-model="updatedObj.releaseName" class="form-control" disabled="disabled">
+					</div>
+					<div style="margin-bottom: 10px" ng-class="(releaseCupForm.devDays.$dirty && releaseCupForm.devDays.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<label>Dev Days:</label>
+						<input type="text" name="devDays" ng-model="updatedObj.devDays" class="form-control" disabled="disabled">
+					</div>					
+					<div style="margin-bottom: 10px" ng-class="(releaseCupForm.regressionDays.$dirty && releaseCupForm.regressionDays.$invalid) ? 'form-group has-error' : 'form-group' ">
+						<label>End to End Regression Days:</label>
+						<input type="text" name="regressionDays" ng-model="updatedObj.regressionDays" class="form-control" disabled="disabled">
+					</div>
+					<div class="form-group" style="overflow-y:scroll;height: 160px; ">
+      					<label for="regDays">Select Skills:</label>
+      						<div class="checkbox" ng-repeat="sysComp in sysComponentsList">
+                            	<label><input type="checkbox" ng-model="sysComp.checked"/>{{sysComp.name}}</label>
+                             </div>
+                            
+                    </div>										
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button ng-click="update()"
+					ng-class="(releaseCupForm.devDays.$error.required || releaseCupForm.regressionDays.$error.required) ? 'btn btn-primary disabled' : 'btn btn-primary'">Update</button>
+				<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+			</div>
+		</div>
+	

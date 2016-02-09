@@ -1,13 +1,14 @@
 function HomeController($scope,$state,Notification,context,ReleasesCupService,ReleasesCupByLabService,ServiceUtils,GetAllLabsByUser,UpdateObjectService){
 	
 	$scope.releaseCupsList		= [];
-	$scope.getAllReleaseCupList = function(){
+	$scope.getAllReleaseCupList = function(redirectToLastReleaseCup){
 		var rel = ReleasesCupByLabService.get({id:$scope.profileObject.labs[0].uuid});
 		rel.$promise.then(
 				function(data){
 					if(data.meta.code == 200){
 						$scope.releaseCupsList = data.dataList;
-						$scope.redirectToLastReleaseCup();
+						if(redirectToLastReleaseCup == true)
+							$scope.redirectToLastReleaseCup();
 					}
 					else{
 						Notification.error({message:ErrorUtils.getMessageByMetadata(data.meta), title: 'Error'});
@@ -35,8 +36,9 @@ function HomeController($scope,$state,Notification,context,ReleasesCupService,Re
 		}
 	};
 		
-	$scope.deleteReleaseCupFromList = function(index){
-		var from 	= index;
+	$scope.deleteReleaseCupFromList = function(uuid){
+		var from 	= ServiceUtils.getIndexByUuid($scope.releaseCupsList, uuid);
+		console.log("Index: "+from);
 		var to		= 0;
 		var rest = $scope.releaseCupsList.slice((to || from) + 1 || $scope.releaseCupsList.length);
 		$scope.releaseCupsList.length = from < 0 ? $scope.releaseCupsList.length + from : from;
@@ -57,7 +59,7 @@ function HomeController($scope,$state,Notification,context,ReleasesCupService,Re
 							var sortedLabs 				= ServiceUtils.sortArrayByField(data.dataList,"lastClicked",true);
 							$scope.profileObject.labs 	= sortedLabs;
 							$scope.selectedLab 			= $scope.profileObject.labs[0]; 
-							$scope.getAllReleaseCupList();
+							$scope.getAllReleaseCupList(true);
 						}						
 					}
 					else{
